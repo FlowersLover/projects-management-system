@@ -4,25 +4,26 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2166aa89-919e-4eb6-8479-2b1851c48cc5" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/applicaton/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buisness/models/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buisness/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buisness/repositories/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buisness/services/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dto/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/pom.xml" afterDir="false" />
+    <list default="true" id="2166aa89-919e-4eb6-8479-2b1851c48cc5" name="Changes" comment="архитектура">
+      <change afterPath="$PROJECT_DIR$/applicaton/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/models/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/repositories/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dto/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/web/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/repositories/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/repositories/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -53,6 +54,16 @@
     "project.structure.side.proportion": "0.20699172"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\СлужбаИКТ2\IdeaProjects\projects-management-system\buisness" />
+      <recent name="C:\Users\СлужбаИКТ2\IdeaProjects\projects-management-system\buisness\services\src" />
+      <recent name="C:\Users\СлужбаИКТ2\IdeaProjects\projects-management-system" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="ru.digitaldesign.murashkina" />
+    </key>
+  </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
@@ -62,6 +73,18 @@
       <option name="presentableId" value="Default" />
       <updated>1683878813867</updated>
     </task>
+    <task id="LOCAL-00001" summary="img">
+      <created>1683883770158</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1683883770158</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="архитектура" />
+    <option name="LAST_COMMIT_MESSAGE" value="архитектура" />
   </component>
 </project>

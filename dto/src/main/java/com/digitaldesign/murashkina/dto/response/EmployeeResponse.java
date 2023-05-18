@@ -1,30 +1,22 @@
-package com.digitaldesign.murashkina.models.employee;
+package com.digitaldesign.murashkina.dto.response;
 
-
+import com.digitaldesign.murashkina.models.employee.EStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
-import java.io.Serializable;
 import java.util.UUID;
-
 @Getter
 @Setter
 @AllArgsConstructor
-@ToString
-public class Employee implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
-    private UUID id;
+public class EmployeeResponse {
+    private String id;
     private String position;
-    private UUID account;
+    private String account;
     private String lastName;
     private String firstName;
     private String middleName;
     private String email;
     private EStatus status;
     private String password;
-
 }

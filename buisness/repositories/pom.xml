@@ -11,6 +11,12 @@
     </parent>
 
     <artifactId>repositories</artifactId>
-
+    <dependencies>
+        <dependency>
+            <groupId>com.digitaldesign.murashkina</groupId>
+            <artifactId>models</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 
 </project>

@@ -1,4 +1,5 @@
 package com.digitaldesign.murashkina.models.team;
 
-public class TeamRole {
+public enum TeamRole {
+    TEAMLEAD, DEVELOPER, TESTER, ANALYST;
 }

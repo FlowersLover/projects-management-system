@@ -1,18 +1,13 @@
-package com.digitaldesign.murashkina.models.task;
+package com.digitaldesign.murashkina.dto.response;
 
 import com.digitaldesign.murashkina.models.employee.Employee;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.digitaldesign.murashkina.models.task.TaskStatus;
 
 import java.util.Date;
 import java.util.UUID;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class Task {
-    private UUID id;
+public class TaskResponse {
+    private String id;
     private String taskName;
     private String description;
     private Employee executor;
@@ -22,5 +17,4 @@ public class Task {
     private Date lastChanged;
     private Date createdAt;
     private TaskStatus status;
-
 }

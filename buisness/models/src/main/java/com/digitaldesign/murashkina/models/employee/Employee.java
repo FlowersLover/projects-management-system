@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.UUID;
 
@@ -14,9 +15,6 @@ import java.util.UUID;
 @AllArgsConstructor
 @ToString
 public class Employee implements Serializable {
-
-    private static final long serialVersionUID = 1L;
-
     private UUID id;
     private String position;
     private UUID account;

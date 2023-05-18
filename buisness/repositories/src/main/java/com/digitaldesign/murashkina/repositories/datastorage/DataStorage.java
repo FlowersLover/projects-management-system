@@ -10,6 +10,8 @@ public interface DataStorage {
     public Object getAll() throws IOException, ClassNotFoundException;
 
     public Object getById(String id) throws IOException, ClassNotFoundException;
+
     public void deleteById(String id) throws IOException, ClassNotFoundException;
+
     public void update(Employee e1, Employee e2) throws IOException, ClassNotFoundException;
 }

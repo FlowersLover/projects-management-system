@@ -4,7 +4,6 @@ import com.digitaldesign.murashkina.models.employee.Employee;
 import com.digitaldesign.murashkina.models.task.TaskStatus;
 
 import java.util.Date;
-import java.util.UUID;
 
 public class TaskResponse {
     private String id;

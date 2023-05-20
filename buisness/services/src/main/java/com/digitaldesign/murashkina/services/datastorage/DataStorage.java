@@ -1,11 +1,11 @@
-package com.digitaldesign.murashkina.repositories.datastorage;
+package com.digitaldesign.murashkina.services.datastorage;
 
 import com.digitaldesign.murashkina.models.employee.Employee;
 
 import java.io.IOException;
 
 public interface DataStorage {
-    public void create(Object obj) throws IOException;
+    public void create(Employee obj) throws IOException;
 
     public Object getAll() throws IOException, ClassNotFoundException;
 

@@ -1,13 +1,12 @@
 package com.digitaldesign.murashkina.dto.request.employee;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.digitaldesign.murashkina.models.team.TeamRole;
+import lombok.Data;
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class EmployeeInfo {
+import java.util.UUID;
+
+@Data
+public class SearchEmployeeFilter {
     private String position;
     private String lastName;
     private String firstName;
@@ -15,4 +14,7 @@ public class EmployeeInfo {
     private String account;
     private String email;
     private String password;
+    private UUID member;
+    private String role;
+    private UUID project;
 }

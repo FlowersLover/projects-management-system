@@ -12,5 +12,5 @@ public class TeamRequest {
     public String id;
     public String project;
     public TeamRole role;
-    public String employee;
+    public String member;
 }

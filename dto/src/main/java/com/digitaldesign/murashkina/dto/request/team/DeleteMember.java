@@ -11,5 +11,5 @@ import lombok.Setter;
 public class DeleteMember {
     public String project;
     public TeamRole role;
-    public String employee;
+    public String member;
 }

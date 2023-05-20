@@ -8,7 +8,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class SignUpRequest {
-    private String email;
+    private String account;
     private String password;
 
 }

@@ -1,4 +1,4 @@
-package com.digitaldesign.murashkina.repositories.datastorage;
+package com.digitaldesign.murashkina.services.datastorage;
 
 import com.digitaldesign.murashkina.models.employee.EStatus;
 import com.digitaldesign.murashkina.models.employee.Employee;
@@ -18,30 +18,30 @@ public class DataStorageImpl implements DataStorage {
         DataStorageImpl dataStorage = new DataStorageImpl();
         Employee employee = new Employee(UUID.randomUUID(),
                 "position",
-                UUID.randomUUID(),
+                "emp1",
                 "lastname",
                 "firstName",
                 "middlename",
                 "email",
-                EStatus.Active,
+                EStatus.ACTIVE,
                 "password");
         Employee employee2 = new Employee(UUID.randomUUID(),
                 "position2",
-                UUID.randomUUID(),
+                "emp2",
                 "lastname2",
                 "firstName2",
                 "middlename2",
                 "email2",
-                EStatus.Active,
+                EStatus.ACTIVE,
                 "password2");
         Employee employee3 = new Employee(UUID.randomUUID(),
                 "position3",
-                UUID.randomUUID(),
+                "emp3",
                 "lastname3",
                 "firstName3",
                 "middlename3",
                 "email3",
-                EStatus.Active,
+                EStatus.ACTIVE,
                 "password3");
 
 
@@ -54,7 +54,7 @@ public class DataStorageImpl implements DataStorage {
     }
 
     @Override
-    public void create(Object employee) throws IOException {
+    public void create(Employee employee) throws IOException {
         FileOutputStream fos = new FileOutputStream(file, true);
         if (file.length() < 1) {
             ObjectOutputStream oos = new ObjectOutputStream(fos);

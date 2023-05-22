@@ -1,4 +1,4 @@
-package com.digitaldesign.murashkina.dao;
+package com.digitaldesign.murashkina.repositories.dao;
 
 import com.digitaldesign.murashkina.dto.request.employee.SearchEmployeeFilter;
 import com.digitaldesign.murashkina.models.employee.Employee;
@@ -39,9 +39,8 @@ public class Main {
         //Поиск
         SearchEmployeeFilter searchEmployeeFilter = new SearchEmployeeFilter();
         //searchEmployeeFilter.setFirstName("Kacey");
-        //searchEmployeeFilter.setEmail("mlemary2@skype.com");
-        //searchEmployeeFilter.setRole("DEVELOPER");
-        searchEmployeeFilter.setRole("TESTER");
+        searchEmployeeFilter.setEmail("mlemary2@skype.com");
+        searchEmployeeFilter.setRole("DEVELOPER");
         List<Employee> employeeList = employeeDao.search(searchEmployeeFilter);
         for (Employee e : employeeList
         ) {

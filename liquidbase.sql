@@ -16,7 +16,7 @@ CREATE TABLE "employee"
 );
 --changeset User1:2
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)
-values ('Zelig', 'Egginson', null, null, null, 'BLOCKED', 'Analyst Programmer', 'H4o89Espd6p');
+values ('Zelig', 'Egginson', null, null, null, 'ACTIVE', 'Analyst Programmer', 'H4o89Espd6p');
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)
 values ('Kacey', 'Clowes', null, null, 'khamstead1', 'ACTIVE', 'Staff Scientist', 'IIkKuT');
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)

@@ -39,8 +39,9 @@ public class Main {
         //Поиск
         SearchEmployeeFilter searchEmployeeFilter = new SearchEmployeeFilter();
         //searchEmployeeFilter.setFirstName("Kacey");
-        searchEmployeeFilter.setEmail("mlemary2@skype.com");
-        searchEmployeeFilter.setRole("DEVELOPER");
+        //searchEmployeeFilter.setEmail("mlemary2@skype.com");
+        //searchEmployeeFilter.setRole("DEVELOPER");
+        searchEmployeeFilter.setRole("TESTER");
         List<Employee> employeeList = employeeDao.search(searchEmployeeFilter);
         for (Employee e : employeeList
         ) {

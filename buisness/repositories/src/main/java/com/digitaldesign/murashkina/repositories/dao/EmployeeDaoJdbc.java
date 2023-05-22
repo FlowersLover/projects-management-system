@@ -1,4 +1,4 @@
-package com.digitaldesign.murashkina.dao;
+package com.digitaldesign.murashkina.repositories.dao;
 
 import com.digitaldesign.murashkina.dto.request.employee.SearchEmployeeFilter;
 import com.digitaldesign.murashkina.models.employee.EStatus;

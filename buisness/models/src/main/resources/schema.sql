@@ -5,7 +5,7 @@ CREATE TABLE "employee"
     "lastname" varchar(50)  NOT NULL,
     middlename varchar(50),
     "account"  varchar(50) UNIQUE,
-    "status"   varchar(10)  NOT NULL,
+    "status"   varchar(30)  NOT NULL,
     "position" varchar(50),
     "email"    varchar(150),
     "password" varchar(250) NOT NULL
@@ -13,7 +13,7 @@ CREATE TABLE "employee"
 );
 
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)
-values ('Zelig', 'Egginson', null, null, null, 'BLOCKED', 'Analyst Programmer', 'H4o89Espd6p');
+values ('Zelig', 'Egginson', null, null, null, 'ACTIVE', 'Analyst Programmer', 'H4o89Espd6p');
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)
 values ('Kacey', 'Clowes', null, null, 'khamstead1', 'ACTIVE', 'Staff Scientist', 'IIkKuT');
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)

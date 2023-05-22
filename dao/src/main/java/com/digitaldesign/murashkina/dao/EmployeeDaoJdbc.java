@@ -182,6 +182,9 @@ public class EmployeeDaoJdbc implements EmployeeDao {
             List<Employee> employees = new ArrayList<>();
             while (rs.next()) {
                 Employee e = new Employee();
+                if(EStatus.valueOf(rs.getString("status")).name().equals("BLOCKED")){
+                    continue;
+                }
                 e.setId(rs.getObject("id",UUID.class));
                 e.setFirstName(rs.getString("firstname"));
                 e.setLastName(rs.getString("lastname"));

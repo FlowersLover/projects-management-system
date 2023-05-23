@@ -1,14 +1,17 @@
 package com.digitaldesign.murashkina.models.project;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.UUID;
-@Getter
+@Builder
 @Setter
-@AllArgsConstructor
+@Getter
+@Entity
+@Table(name = "project")
 public class Project {
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
     private String projectName;
     private String description;

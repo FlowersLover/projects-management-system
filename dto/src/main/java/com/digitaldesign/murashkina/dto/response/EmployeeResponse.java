@@ -1,13 +1,13 @@
 package com.digitaldesign.murashkina.dto.response;
 
-import com.digitaldesign.murashkina.models.employee.EStatus;
-import lombok.AllArgsConstructor;
+import com.digitaldesign.murashkina.dto.enums.EStatus;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 public class EmployeeResponse {
     private String id;
     private String position;

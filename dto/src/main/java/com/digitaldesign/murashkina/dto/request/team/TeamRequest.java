@@ -1,13 +1,13 @@
 package com.digitaldesign.murashkina.dto.request.team;
 
-import com.digitaldesign.murashkina.models.team.TeamRole;
-import lombok.AllArgsConstructor;
+import com.digitaldesign.murashkina.dto.enums.TeamRole;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 public class TeamRequest {
     public String id;
     public String project;

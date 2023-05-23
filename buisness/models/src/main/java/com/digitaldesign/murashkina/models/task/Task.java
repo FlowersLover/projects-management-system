@@ -1,7 +1,8 @@
 package com.digitaldesign.murashkina.models.task;
 
+import com.digitaldesign.murashkina.dto.enums.TaskStatus;
 import com.digitaldesign.murashkina.models.employee.Employee;
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +11,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 public class Task {
     private UUID id;
     private String taskName;

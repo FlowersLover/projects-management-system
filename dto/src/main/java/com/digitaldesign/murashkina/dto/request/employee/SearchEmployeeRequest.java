@@ -1,12 +1,12 @@
 package com.digitaldesign.murashkina.dto.request.employee;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 public class SearchEmployeeRequest {
     private String account;
     private String lastName;

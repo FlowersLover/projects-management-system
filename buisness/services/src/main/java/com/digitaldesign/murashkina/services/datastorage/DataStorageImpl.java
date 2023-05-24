@@ -1,6 +1,6 @@
 package com.digitaldesign.murashkina.services.datastorage;
 
-import com.digitaldesign.murashkina.models.employee.EStatus;
+import com.digitaldesign.murashkina.dto.enums.EStatus;
 import com.digitaldesign.murashkina.models.employee.Employee;
 
 import java.io.*;
@@ -13,110 +13,138 @@ public class DataStorageImpl implements DataStorage {
     static String fileName = "employees.out";
     static File file = new File(fileName);
 
-    public static void main(String[] args) throws IOException, ClassNotFoundException {
+    public static void main(String[] args) {
 
         DataStorageImpl dataStorage = new DataStorageImpl();
-        Employee employee = new Employee(UUID.randomUUID(),
-                "position",
-                "emp1",
-                "lastname",
-                "firstName",
-                "middlename",
-                "email",
-                EStatus.ACTIVE,
-                "password");
-        Employee employee2 = new Employee(UUID.randomUUID(),
-                "position2",
-                "emp2",
-                "lastname2",
-                "firstName2",
-                "middlename2",
-                "email2",
-                EStatus.ACTIVE,
-                "password2");
-        Employee employee3 = new Employee(UUID.randomUUID(),
-                "position3",
-                "emp3",
-                "lastname3",
-                "firstName3",
-                "middlename3",
-                "email3",
-                EStatus.ACTIVE,
-                "password3");
-
+        Employee employee = Employee.builder().id(UUID.randomUUID())
+                .firstName("firstname")
+                .lastName("lastname")
+                .middleName("middlename")
+                .account("emp1")
+                .email("empl@mail.com")
+                .status(EStatus.ACTIVE)
+                .position("position1")
+                .password("qwerty123")
+                .build();
+        Employee employee2 = Employee.builder().id(UUID.randomUUID())
+                .firstName("firstname2")
+                .lastName("lastname2")
+                .middleName("middlename2")
+                .account("emp2")
+                .email("empl2@mail.com")
+                .status(EStatus.ACTIVE)
+                .position("position2")
+                .password("qwerty123")
+                .build();
+        Employee employee3 = Employee.builder().id(UUID.randomUUID())
+                .firstName("firstname3")
+                .lastName("lastname3")
+                .middleName("middlename3")
+                .account("emp3")
+                .email("empl3@mail.com")
+                .status(EStatus.ACTIVE)
+                .position("position3")
+                .password("qwerty123")
+                .build();
 
         dataStorage.create(employee);
+
         dataStorage.create(employee2);
         List<Employee> list = dataStorage.getAll();
         for (Employee emp : list) {
             System.out.println(emp.toString());
         }
-    }
-
-    @Override
-    public void create(Employee employee) throws IOException {
-        FileOutputStream fos = new FileOutputStream(file, true);
-        if (file.length() < 1) {
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(employee);
-            oos.close();
-        } else {
-            MyObjectOutputStream mos = new MyObjectOutputStream(fos);
-            mos.writeObject(employee);
-            mos.close();
+        System.out.println("---------------------");
+        dataStorage.update(employee2,employee3);
+        dataStorage.deleteById(employee.getId().toString());
+        List<Employee> list2 = dataStorage.getAll();
+        for (Employee emp : list2) {
+            System.out.println(emp.toString());
         }
     }
 
     @Override
-    public List<Employee> getAll() throws IOException, ClassNotFoundException {
-        List<Employee> list = new ArrayList<>();
-        FileInputStream fis = new FileInputStream(file);
-        ObjectInputStream ois = new ObjectInputStream(fis);
-        while (fis.available() > 0) {
-            Employee p = (Employee) ois.readObject();
-            list.add(p);
+    public Employee create(Employee employee) {
+        try (FileOutputStream fos = new FileOutputStream(file, true);) {
+            if (file.length() < 1) {
+                ObjectOutputStream oos = new ObjectOutputStream(fos);
+                oos.writeObject(employee);
+                return employee;
+            } else {
+                AppendingObjectOutputStream mos = new AppendingObjectOutputStream(fos);
+                mos.writeObject(employee);
+                return employee;
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        ois.close();
-        return list;
     }
 
     @Override
-    public Employee getById(String id) throws IOException, ClassNotFoundException {
+    public List<Employee> getAll() {
+        List<Employee> employeeList = new ArrayList<>();
+        try (FileInputStream fis = new FileInputStream(file);
+             ObjectInputStream ois = new ObjectInputStream(fis)) {
+            while (fis.available() > 0) {
+                Employee p = (Employee) ois.readObject();
+                employeeList.add(p);
+            }
+            return employeeList;
+        } catch (IOException | ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public Employee getById(String id) {
         List<Employee> employees = getAll();
         return employees.stream().filter(emp -> emp.getId().toString().equals(id)).findFirst().get();
     }
 
     @Override
-    public void deleteById(String id) throws IOException, ClassNotFoundException {
+    public Employee deleteById(String id) {
         List<Employee> employees = getAll();
-        List<Employee> employeesFiltered = employees.stream().filter(emp -> !emp.getId().toString().equals(id)).toList();
-        FileOutputStream fos = new FileOutputStream(file);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        for (Employee employee : employeesFiltered
-        ) {
-            oos.writeObject(employee);
+        Employee employeToDelete = employees.stream().filter(employee ->
+                (employee.getId().toString().equals(id))).findFirst().get();
+        employeToDelete.setStatus(EStatus.BLOCKED);
+        List<Employee> employeesFiltered = new ArrayList<>(employees.stream().filter(emp -> !emp.getId().toString().equals(id)).toList());
+        employeesFiltered.add(employeToDelete);
+        try (FileOutputStream fos = new FileOutputStream(file);
+             ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            for (Employee employee : employeesFiltered
+            ) {
+                oos.writeObject(employee);
+            }
+            return employeToDelete;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        oos.close();
     }
 
     @Override
-    public void update(Employee e1, Employee e2) throws IOException, ClassNotFoundException {
+    public Employee update(Employee oldEmployee, Employee newEmployee){
         List<Employee> employees = getAll();
-        List<Employee> employeesFiltered = employees.stream().filter(emp -> !emp.getId().equals(e1.getId())).collect(Collectors.toList());
-        employeesFiltered.add(e2);
-        FileOutputStream fos = new FileOutputStream(file);
-        ObjectOutputStream oos = new ObjectOutputStream(fos);
-        for (Employee employee : employeesFiltered
-        ) {
-            oos.writeObject(employee);
+        List<Employee> employeesFiltered = employees.stream().filter(emp -> !emp.getId().equals(oldEmployee.getId())).collect(Collectors.toList());
+        employeesFiltered.add(newEmployee);
+        try(FileOutputStream fos = new FileOutputStream(file);
+            ObjectOutputStream oos = new ObjectOutputStream(fos)) {
+            for (Employee employee : employeesFiltered
+            ) {
+
+                oos.writeObject(employee);
+            }
+            return newEmployee;
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
-        oos.close();
     }
 }
 
-class MyObjectOutputStream extends ObjectOutputStream {
+class AppendingObjectOutputStream extends ObjectOutputStream {
 
-    public MyObjectOutputStream(OutputStream out) throws IOException {
+    public AppendingObjectOutputStream(OutputStream out) throws IOException {
         super(out);
     }
 

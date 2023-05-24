@@ -1,6 +1,7 @@
 package com.digitaldesign.murashkina.models.employee;
 
 
+import com.digitaldesign.murashkina.dto.enums.EStatus;
 import lombok.*;
 
 import java.io.Serial;
@@ -9,9 +10,8 @@ import java.util.UUID;
 
 @Getter
 @Setter
-@AllArgsConstructor
-@NoArgsConstructor
 @ToString
+@Builder
 public class Employee implements Serializable{
     @Serial
     private static final long serialVersionUID = 1L;

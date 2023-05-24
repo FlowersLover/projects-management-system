@@ -1,6 +1,6 @@
 package com.digitaldesign.murashkina.dto.request.task;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 public class TaskRequest {
     private String taskName;
     private String description;

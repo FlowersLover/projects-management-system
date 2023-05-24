@@ -1,4 +1,4 @@
-package com.digitaldesign.murashkina.models.project;
+package com.digitaldesign.murashkina.dto.enums;
 
 public enum ProjStatus {
     DRAFT,

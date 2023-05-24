@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.digitaldesign.murashkina</groupId>
         <artifactId>projects-management-system</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>${revision}${changelist}</version>
     </parent>
     <modules>
         <module>models</module>

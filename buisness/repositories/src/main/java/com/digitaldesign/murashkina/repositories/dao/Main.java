@@ -4,6 +4,7 @@ import com.digitaldesign.murashkina.dto.request.employee.SearchEmployeeFilter;
 import com.digitaldesign.murashkina.models.employee.Employee;
 
 import java.util.List;
+import java.util.UUID;
 
 public class Main {
     public static EmployeeDao employeeDao = new EmployeeDaoJdbc(
@@ -13,34 +14,44 @@ public class Main {
 
     public static void main(String[] args) {
         //Создать сотрудника
-        /*Employee employee = new Employee();
+        /*Employee employee = Employee.builder().build();
         employee.setFirstName("Петр");
         employee.setLastName("Петров");
         employee.setMiddleName("Петрович");
-        employee.setAccount("petrov11");
+        employee.setAccount("petro");
         employee.setEmail("petrov@mail.com");
         employee.setPassword("qwerty123");
         employee.setPosition("engineer");
-        //boolean createEmployeeResult = employeeDao.create(employee);
-        //System.out.println(createEmployeeResult);*/
+        Employee createEmployeeResult = employeeDao.create(employee);
+
+        System.out.println(createEmployeeResult.toString());*/
 
         //получить карточку сотрудника
-        Employee employee = employeeDao.read("petrov11");
-        //System.out.println(employee.toString());
+        Employee employee2 = employeeDao.read("petrov123");
+        //System.out.println(employee2.toString());
+
+        /*Employee employee3 = employeeDao.read(employee2.getId());
+        System.out.println(employee3.toString());*/
 
         //Изменить данные сотрудника
-        employee.setFirstName("Петр");
-        Boolean res = employeeDao.update(employee);
-        //System.out.println(employeeDao.read("petrov11").toString());
+        employee2.setFirstName("Саша");
+        Employee res = employeeDao.update(employee2);
+        //System.out.println(res.toString());
 
         //Удалить сотрудника
-        //employeeDao.delete(employee.getId());
+        /*Employee deleteEmp = employeeDao.delete(employee2.getId());
+        System.out.println(deleteEmp.toString());*/
 
         //Поиск
-        SearchEmployeeFilter searchEmployeeFilter = new SearchEmployeeFilter();
+        SearchEmployeeFilter searchEmployeeFilter = SearchEmployeeFilter.builder()
+                //.email("mlemary2@skype.com")
+                //.lastName("Duligall")
+                .middleName("Lemary")
+                //.account("mlemary21")
+                .build();
         //searchEmployeeFilter.setFirstName("Kacey");
-        searchEmployeeFilter.setEmail("mlemary2@skype.com");
-        searchEmployeeFilter.setRole("DEVELOPER");
+        //searchEmployeeFilter.setEmail("mlemary2@skype.com");
+        //searchEmployeeFilter.setRole("DEVELOPER");
         List<Employee> employeeList = employeeDao.search(searchEmployeeFilter);
         for (Employee e : employeeList
         ) {

@@ -2,16 +2,16 @@ package com.digitaldesign.murashkina.services.datastorage;
 
 import com.digitaldesign.murashkina.models.employee.Employee;
 
-import java.io.IOException;
+import java.util.List;
 
 public interface DataStorage {
-    public void create(Employee obj) throws IOException;
+    public Employee create(Employee employee);
 
-    public Object getAll() throws IOException, ClassNotFoundException;
+    public List<Employee> getAll();
 
-    public Object getById(String id) throws IOException, ClassNotFoundException;
+    public Employee getById(String id) ;
 
-    public void deleteById(String id) throws IOException, ClassNotFoundException;
+    public Employee deleteById(String id);
 
-    public void update(Employee e1, Employee e2) throws IOException, ClassNotFoundException;
+    public Employee update(Employee oldEmployee, Employee newEmployee);
 }

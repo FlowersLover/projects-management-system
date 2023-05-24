@@ -20,6 +20,9 @@ insert into employee (firstname, lastname, middlename, email, account, status, p
 values ('Merrile', 'Duligall', 'Lemary', 'mlemary2@skype.com', 'mlemary2', 'ACTIVE', 'Executive Secretary',
         'cQv9DxP2o4H');
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)
+values ('Merrile', 'Duligall', 'Lemary', 'mlemary2@skype.com', 'mlemary21', 'ACTIVE', 'Executive Secretary',
+        'cQv9DxP2o4H');
+insert into employee (firstname, lastname, middlename, email, account, status, position, password)
 values ('Archy', 'Chimes', null, null, 'avenart3', 'ACTIVE', 'Administrative Assistant II', 'rD0K0KmTz');
 insert into employee (firstname, lastname, middlename, email, account, status, position, password)
 values ('Marcelle', 'Martinolli', null, null, 'mkitson4', 'ACTIVE', 'Registered Nurse', 'oxL6SDWG34B');
@@ -106,7 +109,7 @@ values ((SELECT id FROM project WHERE project_name = 'pellentesque'), 'TEAMLEAD'
         (SELECT id FROM employee WHERE firstname = 'Kacey'));
 insert into team (project, role, member)
 values ((SELECT id FROM project WHERE project_name = 'pellentesque'), 'DEVELOPER',
-        (SELECT id FROM employee WHERE firstname = 'Merrile'));
+        (SELECT id FROM employee WHERE account = 'mlemary21'));
 insert into team (project, role, member)
 values ((SELECT id FROM project WHERE project_name = 'pellentesque'), 'ANALYST',
         (SELECT id FROM employee WHERE firstname = 'Archy'));
@@ -166,6 +169,6 @@ Select firstname, lastname, middlename, email
 from employee;
 SELECT * from project;
 SELECT * from team;
-
+SELECT * from employee;
 
 

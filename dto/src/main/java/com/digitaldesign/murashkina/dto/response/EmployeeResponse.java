@@ -1,11 +1,11 @@
 package com.digitaldesign.murashkina.dto.response;
 
-import com.digitaldesign.murashkina.models.employee.EStatus;
+import com.digitaldesign.murashkina.dto.enums.EStatus;
 import lombok.*;
 
-@Data
-@AllArgsConstructor
-@NoArgsConstructor
+@Getter
+@Setter
+@Builder
 public class EmployeeResponse {
     private String id;
     private String position;

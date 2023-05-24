@@ -1,7 +1,7 @@
 package com.digitaldesign.murashkina.repositories.dao;
 
+import com.digitaldesign.murashkina.dto.enums.EStatus;
 import com.digitaldesign.murashkina.dto.request.employee.SearchEmployeeFilter;
-import com.digitaldesign.murashkina.models.employee.EStatus;
 import com.digitaldesign.murashkina.models.employee.Employee;
 
 import java.sql.*;
@@ -20,7 +20,7 @@ public class EmployeeDaoJdbc implements EmployeeDao {
     }
 
     @Override
-    public boolean create(Employee e) {
+    public Employee create(Employee e) {
         try (Connection connection = getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "insert into employee(firstname, lastname, middlename, position, account, email, password,status) values(?, ?, ?, ?, ?, ?, ?,?)");
@@ -33,7 +33,7 @@ public class EmployeeDaoJdbc implements EmployeeDao {
             preparedStatement.setString(7, e.getPassword());
             preparedStatement.setString(8, "ACTIVE");
             preparedStatement.executeUpdate();
-            return true;
+            return read(e.getAccount());
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -47,21 +47,23 @@ public class EmployeeDaoJdbc implements EmployeeDao {
             preparedStatement.setString(1, account);
             ResultSet result = preparedStatement.executeQuery();
             result.next();
-            Employee e = new Employee();
-            e.setId(result.getObject("id",UUID.class));
-            e.setFirstName(result.getString("firstname"));
-            e.setLastName(result.getString("lastname"));
-            e.setMiddleName(result.getString("middlename"));
-            e.setPosition(result.getString("position"));
-            e.setStatus(EStatus.valueOf(result.getString("status")));
-            e.setPassword(result.getString("password"));
-            e.setEmail(result.getString("email"));
-            e.setAccount(result.getString("account"));
+            Employee e = Employee.builder()
+                    .id(result.getObject("id", UUID.class))
+                    .firstName(result.getString("firstname"))
+                    .lastName(result.getString("lastname"))
+                    .middleName(result.getString("middlename"))
+                    .email(result.getString("email"))
+                    .position(result.getString("position"))
+                    .status(EStatus.valueOf(result.getString("status")))
+                    .password(result.getString("password"))
+                    .account(result.getString("account"))
+                    .build();
             return e;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
+
     @Override
     public Employee read(UUID id) {
         try (Connection connection = getConnection()) {
@@ -70,16 +72,17 @@ public class EmployeeDaoJdbc implements EmployeeDao {
             preparedStatement.setObject(1, id);
             ResultSet result = preparedStatement.executeQuery();
             result.next();
-            Employee e = new Employee();
-            e.setId(result.getObject("id",UUID.class));
-            e.setFirstName(result.getString("firstname"));
-            e.setLastName(result.getString("lastname"));
-            e.setMiddleName(result.getString("middlename"));
-            e.setPosition(result.getString("position"));
-            e.setStatus(EStatus.valueOf(result.getString("status")));
-            e.setPassword(result.getString("password"));
-            e.setEmail(result.getString("email"));
-            e.setAccount(result.getString("account"));
+            Employee e = Employee.builder()
+                    .id(result.getObject("id", UUID.class))
+                    .firstName(result.getString("firstname"))
+                    .lastName(result.getString("lastname"))
+                    .middleName(result.getString("middlename"))
+                    .email(result.getString("email"))
+                    .position(result.getString("position"))
+                    .status(EStatus.valueOf(result.getString("status")))
+                    .password(result.getString("password"))
+                    .account(result.getString("account"))
+                    .build();
             return e;
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
@@ -87,10 +90,10 @@ public class EmployeeDaoJdbc implements EmployeeDao {
     }
 
     @Override
-    public boolean update(Employee e) {
+    public Employee update(Employee e) {
         try (Connection connection = getConnection()) {
-            if(read(e.getId()).getStatus().name().equals("BLOCKED")){
-                return false;
+            if (read(e.getId()).getStatus().name().equals("BLOCKED")) {
+                return null;
             }
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "update  employee set firstname = ?, lastname = ? ,middlename = ? ,position = ?, account = ?, email = ?, password = ?, status = ?  where id = ?");
@@ -104,20 +107,20 @@ public class EmployeeDaoJdbc implements EmployeeDao {
             preparedStatement.setString(8, e.getStatus().name());
             preparedStatement.setObject(9, e.getId());
             preparedStatement.executeUpdate();
-            return true;
+            return read(e.getId());
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
     }
 
     @Override
-    public boolean delete(UUID id) {
+    public Employee delete(UUID id) {
         try (Connection connection = getConnection()) {
             PreparedStatement preparedStatement = connection.prepareStatement(
                     "update  employee set status = 'BLOCKED' where id = ?");
             preparedStatement.setObject(1, id);
             preparedStatement.executeUpdate();
-            return true;
+            return read(id);
         } catch (SQLException ex) {
             throw new RuntimeException(ex);
         }
@@ -140,22 +143,20 @@ public class EmployeeDaoJdbc implements EmployeeDao {
             searchQuery += "and e.email = ? ";
             parameterMap.put(paramIndex++, sef.getEmail());
         }
-        if (sef.getPosition() != null) {
-            searchQuery += "and e.position = ? ";
-            parameterMap.put(paramIndex++, sef.getPosition());
-        }
+
         if (sef.getMiddleName() != null) {
             searchQuery += "and e.middleName = ? ";
-            parameterMap.put(paramIndex++, sef.getMiddleName());
+        } else {
+            searchQuery += "or e.middleName = ? ";
         }
+        parameterMap.put(paramIndex++, sef.getMiddleName());
         if (sef.getAccount() != null) {
             searchQuery += "and e.account = ? ";
-            parameterMap.put(paramIndex++, sef.getAccount());
+        } else {
+            searchQuery += "or e.account = ? ";
         }
-        if (sef.getPassword() != null) {
-            searchQuery += "and e.password = ? ";
-            parameterMap.put(paramIndex++, sef.getPassword());
-        }
+        parameterMap.put(paramIndex++, sef.getAccount());
+
         if (sef.getMember() != null) {
             searchQuery += "and t.member = ? ";
             parameterMap.put(paramIndex++, sef.getMember());
@@ -181,11 +182,11 @@ public class EmployeeDaoJdbc implements EmployeeDao {
             ResultSet rs = ps.executeQuery();
             List<Employee> employees = new ArrayList<>();
             while (rs.next()) {
-                Employee e = new Employee();
-                if(EStatus.valueOf(rs.getString("status")).name().equals("BLOCKED")){
+                Employee e = Employee.builder().build();
+                if (EStatus.valueOf(rs.getString("status")).name().equals("BLOCKED")) {
                     continue;
                 }
-                e.setId(rs.getObject("id",UUID.class));
+                e.setId(rs.getObject("id", UUID.class));
                 e.setFirstName(rs.getString("firstname"));
                 e.setLastName(rs.getString("lastname"));
                 e.setMiddleName(rs.getString("middlename"));

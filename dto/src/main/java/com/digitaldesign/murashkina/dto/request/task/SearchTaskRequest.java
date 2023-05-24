@@ -1,6 +1,6 @@
 package com.digitaldesign.murashkina.dto.request.task;
 
-import com.digitaldesign.murashkina.models.task.TaskStatus;
+import com.digitaldesign.murashkina.dto.enums.TaskStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

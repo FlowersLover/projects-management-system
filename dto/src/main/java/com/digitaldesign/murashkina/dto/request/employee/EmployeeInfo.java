@@ -1,12 +1,12 @@
 package com.digitaldesign.murashkina.dto.request.employee;
 
-import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter
 @Setter
-@AllArgsConstructor
+@Builder
 public class EmployeeInfo {
     private String position;
     private String lastName;

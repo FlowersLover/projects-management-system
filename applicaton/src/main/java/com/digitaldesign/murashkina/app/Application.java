@@ -1,23 +1,8 @@
 package com.digitaldesign.murashkina.app;
 
-import com.digitaldesign.murashkina.dto.enums.ProjStatus;
-import com.digitaldesign.murashkina.dto.enums.TaskStatus;
 import com.digitaldesign.murashkina.dto.enums.TeamRole;
-import com.digitaldesign.murashkina.dto.request.employee.EmployeeRequest;
-import com.digitaldesign.murashkina.dto.request.employee.SearchEmployeeRequest;
-import com.digitaldesign.murashkina.dto.request.employee.UpdateEmployeeRequest;
-import com.digitaldesign.murashkina.dto.request.employee.UpdatePasswordRequest;
-import com.digitaldesign.murashkina.dto.request.project.ProjectRequest;
-import com.digitaldesign.murashkina.dto.request.project.SearchProjRequest;
-import com.digitaldesign.murashkina.dto.request.project.UpdateProjectStatus;
-import com.digitaldesign.murashkina.dto.request.task.SearchTaskRequest;
 import com.digitaldesign.murashkina.dto.request.task.TaskRequest;
-import com.digitaldesign.murashkina.dto.request.task.UpdateTaskStatusRequest;
 import com.digitaldesign.murashkina.dto.request.team.TeamDto;
-import com.digitaldesign.murashkina.dto.response.EmployeeResponse;
-import com.digitaldesign.murashkina.dto.response.ProjectResponse;
-import com.digitaldesign.murashkina.dto.response.TaskResponse;
-import com.digitaldesign.murashkina.models.project.Project;
 import com.digitaldesign.murashkina.repositories.TaskRepository;
 import com.digitaldesign.murashkina.services.EmployeeService;
 import com.digitaldesign.murashkina.services.ProjectService;
@@ -203,9 +188,9 @@ public class Application {
 
             //Создание участника
             TeamDto teamDto = TeamDto.builder()
-                    .member(UUID.fromString("ee79c471-432c-44c4-a26a-cd86286c0eac"))
+                    .member(UUID.fromString("77122fe1-7cc4-4701-8719-e63fb8418ac6"))
                     .role(TeamRole.ANALYST)
-                    .project(UUID.fromString("9e82845b-dd41-4b17-bfb6-1131c4940d2c")).build();
+                    .project(UUID.fromString("d60b5f78-550d-4455-aaba-6afdbffb3c8a")).build();
             TeamDto member = teamService.createMember(teamDto);
             System.out.println(member);
 
@@ -214,9 +199,10 @@ public class Application {
             for (TeamDto p : all) {
                 System.out.println(p.toString());
             }
+
             TeamDto teamDto1 = teamService.deleteMember(teamDto);
             System.out.println(teamDto1.toString());
         };
     }
 
-}-
+}

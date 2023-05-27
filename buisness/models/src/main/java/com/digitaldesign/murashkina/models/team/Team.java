@@ -1,12 +1,8 @@
 package com.digitaldesign.murashkina.models.team;
 
 import com.digitaldesign.murashkina.dto.enums.TeamRole;
-import com.digitaldesign.murashkina.models.employee.Employee;
-import com.digitaldesign.murashkina.models.project.Project;
 import jakarta.persistence.*;
 import lombok.*;
-
-import java.io.Serializable;
 
 @Getter
 @Setter
@@ -14,6 +10,7 @@ import java.io.Serializable;
 @Entity
 @Table(name = "team")
 @AllArgsConstructor
+@ToString
 public class Team {
     @EmbeddedId
     private TeamId teamId;

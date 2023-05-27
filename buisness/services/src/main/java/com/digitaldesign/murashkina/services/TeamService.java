@@ -8,6 +8,7 @@ import com.digitaldesign.murashkina.repositories.ProjectRepository;
 import com.digitaldesign.murashkina.repositories.TeamRepository;
 import com.digitaldesign.murashkina.services.mapping.TeamMapper;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -39,7 +40,7 @@ public class TeamService {
         teamRepository.save(team);
         return teamMapper.toDto(team);
     }
-
+    @Transactional
     public TeamDto deleteMember(TeamDto teamRequest) {
         Team team = Team.builder()
                 .role(teamRequest.getRole())
@@ -48,7 +49,7 @@ public class TeamService {
                         .project(projectRepository.findById(teamRequest.getProject()).get())
                         .build())
                 .build();
-        teamRepository.deleteMember(team.getTeamId().getProject().getId(), team.getTeamId().getMember().getId());
+        teamRepository.deleteMember(team.getTeamId().getProject(), team.getTeamId().getMember());
         return teamMapper.toDto(team);
     }
 

@@ -1,15 +1,16 @@
 package com.digitaldesign.murashkina.dto.response;
 
 import com.digitaldesign.murashkina.dto.enums.TaskStatus;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.util.Date;
 
 @Getter
 @Setter
 @Builder
+@ToString
+@NoArgsConstructor
+@AllArgsConstructor
 public class TaskResponse {
     private String id;
     private String taskName;

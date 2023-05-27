@@ -4,14 +4,61 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2166aa89-919e-4eb6-8479-2b1851c48cc5" name="Changes" comment="архитектура">
-      <change afterPath="$PROJECT_DIR$/applicaton/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buisness/models/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buisness/repositories/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/dto/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/web/src/main/java/ru/digitaldesign/murashkina/Main.java" afterDir="false" />
+    <list default="true" id="2166aa89-919e-4eb6-8479-2b1851c48cc5" name="Changes" comment=".">
+      <change afterPath="$PROJECT_DIR$/applicaton/src/main/java/com/digitaldesign/murashkina/app/Application.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/applicaton/src/main/resources/application.yml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/employee/EmployeeId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/metamodels/Employee_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/metamodels/Project_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/metamodels/Task_.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/team/TeamId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/repositories/src/main/java/com/digitaldesign/murashkina/repositories/EmployeeRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/repositories/src/main/java/com/digitaldesign/murashkina/repositories/ProjectRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/repositories/src/main/java/com/digitaldesign/murashkina/repositories/TaskRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/repositories/src/main/java/com/digitaldesign/murashkina/repositories/TeamRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/EmployeeService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/ProjectService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/TaskService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/TeamService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/mapping/EmployeeMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/mapping/ProjectMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/mapping/TaskMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/mapping/TeamMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/specifications/EmployeeSpecification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/specifications/ProjectSpecification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/buisness/services/src/main/java/com/digitaldesign/murashkina/services/specifications/TaskSpecification.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/UpdateEmployeeRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/UpdatePasswordRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/applicaton/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/applicaton/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/applicaton/src/main/java/com/digitaldesign/murashkina/app/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/models/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/models/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/employee/Employee.java" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/employee/Employee.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/project/Project.java" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/project/Project.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/task/Task.java" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/task/Task.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/team/Team.java" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/models/src/main/java/com/digitaldesign/murashkina/models/team/Team.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/models/src/main/resources/schema.sql" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/models/src/main/resources/schema.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/buisness/repositories/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/repositories/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/repositories/src/main/java/com/digitaldesign/murashkina/repositories/dao/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/buisness/services/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/buisness/services/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/enums/ProjStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/enums/ProjStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/enums/TaskStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/enums/TaskStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/EmployeeInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/EmployeeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/SearchEmployeeFilter.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/SearchEmployeeFilter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/SearchEmployeeRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/SearchEmployeeRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/SignUpRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/employee/SignUpRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/project/SearchProjRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/project/SearchProjRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/project/UpdateProjectStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/project/UpdateProjectStatus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/task/SearchTaskRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/task/SearchTaskRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/task/TaskRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/task/TaskRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/task/UpdateTaskStatusRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/task/UpdateTaskStatusRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/team/DeleteMember.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/team/DeleteMember.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/team/TeamRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/request/team/TeamDto.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/response/EmployeeResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/response/EmployeeResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/response/ProjectResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/response/ProjectResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/response/TaskResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/dto/src/main/java/com/digitaldesign/murashkina/dto/response/TaskResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,17 +73,21 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="feature/jdbc" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
   </component>
-  <component name="MavenImportPreferences">
-    <option name="importingSettings">
-      <MavenImportingSettings>
-        <option name="workspaceImportEnabled" value="true" />
-      </MavenImportingSettings>
-    </option>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectId" id="2PgVeuOD2kxk14LBoYskTzf8l48" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -44,18 +95,30 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "jdk.selected.JAVA_MODULE": "17",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.15",
-    "project.structure.side.proportion": "0.20699172"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;jdk.selected.JAVA_MODULE&quot;: &quot;17&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.20699172&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.editor&quot;,
+    &quot;spring.configuration.checksum&quot;: &quot;c64dd12ea99457f9ff92354a2caeed13&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\user\projects-management-system\applicaton\src\main\resources" />
+      <recent name="C:\Users\user\projects-management-system" />
       <recent name="C:\Users\СлужбаИКТ2\IdeaProjects\projects-management-system\buisness" />
       <recent name="C:\Users\СлужбаИКТ2\IdeaProjects\projects-management-system\buisness\services\src" />
       <recent name="C:\Users\СлужбаИКТ2\IdeaProjects\projects-management-system" />
@@ -63,6 +126,53 @@
     <key name="CopyClassDialog.RECENTS_KEY">
       <recent name="ru.digitaldesign.murashkina" />
     </key>
+  </component>
+  <component name="RunManager" selected="Spring Boot.Application">
+    <configuration name="Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.digitaldesign.murashkina.repositories.dao.Main" />
+      <module name="repositories" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.digitaldesign.murashkina.repositories.dao.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="com.digitaldesign.murashkina.services.Main" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.digitaldesign.murashkina.services.Main" />
+      <module name="services" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.digitaldesign.murashkina.services.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="schema.sql" type="DatabaseScript" editBeforeRun="true" temporary="true" nameIsGenerated="true">
+      <script-file value="$PROJECT_DIR$/buisness/models/src/main/resources/schema.sql" />
+      <script-mode>FILE</script-mode>
+      <method v="2" />
+    </configuration>
+    <configuration name="Application" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot">
+      <module name="applicaton" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.digitaldesign.murashkina.app.Application" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.com.digitaldesign.murashkina.services.Main" />
+        <item itemvalue="Database Script.schema.sql" />
+        <item itemvalue="Application.Main" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -72,6 +182,12 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1683878813867</updated>
+      <workItem from="1685037322458" duration="34561000" />
+      <workItem from="1685117295897" duration="1544000" />
+      <workItem from="1685119693747" duration="16204000" />
+      <workItem from="1685137827869" duration="632000" />
+      <workItem from="1685138499721" duration="889000" />
+      <workItem from="1685139944320" duration="9412000" />
     </task>
     <task id="LOCAL-00001" summary="img">
       <created>1683883770158</created>
@@ -83,8 +199,32 @@
     <option name="localTasksCounter" value="2" />
     <servers />
   </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="архитектура" />
     <option name="LAST_COMMIT_MESSAGE" value="архитектура" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <breakpoint enabled="true" type="java-exception">
+          <properties class="org.hibernate.id.IdentifierGenerationException" package="org.hibernate.id" />
+          <option name="timeStamp" value="11" />
+        </breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

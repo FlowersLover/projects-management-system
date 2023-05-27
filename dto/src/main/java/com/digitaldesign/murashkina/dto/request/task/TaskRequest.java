@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.UUID;
 
 @Getter
 @Setter
@@ -12,8 +13,9 @@ import java.util.Date;
 public class TaskRequest {
     private String taskName;
     private String description;
-    private String executor;
+    private UUID executor;
     private Integer hoursToCompleteTask;
     private Date deadline;
+    private UUID author;
 
 }

@@ -3,7 +3,7 @@ CREATE TABLE "employee"
     "id"       uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     firstname  varchar(50)  NOT NULL,
     "lastname" varchar(50)  NOT NULL,
-    middlename varchar(50),
+    "middlename" varchar(50),
     "account"  varchar(50) UNIQUE,
     "status"   varchar(30)  NOT NULL,
     "position" varchar(50),

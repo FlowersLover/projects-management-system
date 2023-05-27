@@ -1,5 +1,6 @@
 package com.digitaldesign.murashkina.dto.request.task;
 
+import com.digitaldesign.murashkina.dto.enums.TaskStatus;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,6 +9,5 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UpdateTaskStatusRequest {
-    private String status;
-    private String id;
+    private TaskStatus status;
 }

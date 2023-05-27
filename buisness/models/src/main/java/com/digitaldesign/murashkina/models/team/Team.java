@@ -3,15 +3,24 @@ package com.digitaldesign.murashkina.models.team;
 import com.digitaldesign.murashkina.dto.enums.TeamRole;
 import com.digitaldesign.murashkina.models.employee.Employee;
 import com.digitaldesign.murashkina.models.project.Project;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @Builder
+@Entity
+@Table(name = "team")
+@AllArgsConstructor
 public class Team {
-    public Project project;
-    public TeamRole role;
-    public Employee member;
+    @EmbeddedId
+    private TeamId teamId;
+    @Enumerated(EnumType.STRING)
+    private TeamRole role;
+
+    public Team() {
+
+    }
 }

@@ -5,11 +5,13 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.UUID;
+
 @Getter
 @Setter
 @Builder
 public class DeleteMember {
-    public String project;
+    public UUID project;
     public TeamRole role;
-    public String member;
+    public UUID member;
 }

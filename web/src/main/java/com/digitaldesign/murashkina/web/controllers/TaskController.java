@@ -72,7 +72,6 @@ public class TaskController {
                 .deadline(deadline)
                 .createdAt(createdAt)
                 .status(status).build();
-        List<TaskResponse> search = taskService.search(request);
-        return search;
+        return taskService.search(request);
     }
 }

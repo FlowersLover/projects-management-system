@@ -132,7 +132,7 @@ public class TaskService {
             }
         });
         return taskList.stream()
-                .map(task -> taskMapper.toDto(task)).collect(Collectors.toList());
+                .map(taskMapper::toDto).collect(Collectors.toList());
     }
 
     public TaskResponse findById(UUID uuid) {
@@ -145,10 +145,7 @@ public class TaskService {
     }
 
     public boolean taskStatusIsAviable(UUID taskId, TaskStatus status) {
-        if (status.getStatusNumber() >= taskRepository.findById(taskId).get().getStatus().getStatusNumber()) {
-            return true;
-        }
-        return false;
+        return status.getStatusNumber() >= taskRepository.findById(taskId).get().getStatus().getStatusNumber();
     }
 
     private void taskStatusIsNull(UpdateTaskStatusRequest taskRequest) {

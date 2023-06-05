@@ -18,7 +18,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 import java.util.UUID;
 
@@ -66,7 +65,7 @@ public class EmployeeController {
 
     @Operation(summary = "Изменение пароля сотрудника")
     @PutMapping(path = "/password/{employeeId}")
-    public ResponseEntity<EmployeeResponse> updatePassword(@PathVariable("employeeId") String employeeId, @RequestBody @Valid UpdatePasswordRequest request, Principal principal) {
+    public ResponseEntity<EmployeeResponse> updatePassword(@PathVariable("employeeId") String employeeId, @RequestBody @Valid UpdatePasswordRequest request) {
         EmployeeResponse employeeResponse = employeeService.updatePassword(request, UUID.fromString(employeeId));
         return ResponseEntity.ok(employeeResponse);
     }

@@ -1,17 +1,21 @@
 package com.digitaldesign.murashkina.dto.request.team;
 
-import com.digitaldesign.murashkina.dto.enums.TeamRole;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import lombok.*;
 
 import java.util.UUID;
 
 @Getter
 @Setter
 @Builder
+@ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Schema(description = "Удалить участника проекта")
 public class DeleteMember {
-    public UUID project;
-    public TeamRole role;
-    public UUID member;
+    @Schema(description = "Идентификатор проекта")
+    private UUID project;
+    @Schema(description = "Идентификатор участника проекта")
+    private UUID member;
 }
+

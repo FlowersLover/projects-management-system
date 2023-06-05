@@ -1,6 +1,6 @@
 package com.digitaldesign.murashkina.dto.request.team;
 
-import com.digitaldesign.murashkina.dto.enums.TeamRole;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.*;
 
 import java.util.UUID;
@@ -11,8 +11,13 @@ import java.util.UUID;
 @ToString
 @AllArgsConstructor
 @NoArgsConstructor
+@Schema(description = "Создать участника проекта")
 public class TeamDto {
+    @Schema(description = "Идентификатор проекта")
     private UUID project;
-    private TeamRole role;
+
+    @Schema(description = "Роль сотрудника в команде")
+    private String role;
+    @Schema(description = "Идентификатор участника команды")
     private UUID member;
 }

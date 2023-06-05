@@ -1,39 +1,31 @@
 package com.digitaldesign.murashkina.app;
 
-import com.digitaldesign.murashkina.dto.enums.TeamRole;
-import com.digitaldesign.murashkina.dto.request.task.TaskRequest;
-import com.digitaldesign.murashkina.dto.request.team.TeamDto;
-import com.digitaldesign.murashkina.repositories.TaskRepository;
+import com.digitaldesign.murashkina.dto.config.DtoConfiguration;
+import com.digitaldesign.murashkina.models.config.ModelsConfiguration;
+import com.digitaldesign.murashkina.repositories.config.RepositoriesConfiguration;
 import com.digitaldesign.murashkina.services.EmployeeService;
 import com.digitaldesign.murashkina.services.ProjectService;
 import com.digitaldesign.murashkina.services.TaskService;
 import com.digitaldesign.murashkina.services.TeamService;
+import com.digitaldesign.murashkina.services.config.ServicesConfiguration;
+import com.digitaldesign.murashkina.services.security.SecurityConfiguration;
+import com.digitaldesign.murashkina.web.config.WebConfiguration;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.*;
+import org.springframework.context.annotation.Import;
 
 
 @SpringBootApplication
-@ComponentScan({"com.digitaldesign.murashkina.dto",
-        "com.digitaldesign.murashkina.services",
-        "com.digitaldesign.murashkina.repositories"})
-@EntityScan("com.digitaldesign.murashkina.models")
-@EnableJpaRepositories("com.digitaldesign.murashkina.repositories")
+@Import({RepositoriesConfiguration.class,
+        DtoConfiguration.class,
+        ModelsConfiguration.class,
+        ServicesConfiguration.class,
+        WebConfiguration.class,
+        SecurityConfiguration.class})
 public class Application {
-    private final TaskRepository taskRepository;
-
-    public Application(TaskRepository taskRepository) {
-        this.taskRepository = taskRepository;
-    }
 
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
@@ -57,7 +49,7 @@ public class Application {
                     .firstName("kkkkk")
                     .lastName("Bamjtot")
                     .middleName("Bebrik")
-                    .account("bebra888")
+                    .account("bebra8865dggf8")
                     .email("frosia@mail.com")
                     .position("manager")
                     .password("qwerty123")
@@ -75,7 +67,7 @@ public class Application {
                     .account("bebt")
                     .position("VP Marketing")
                     .build();
-            EmployeeResponse employeeUpd = employeeService.update(request, UUID.fromString("c4fe7113-7bf2-4b0c-abe8-1cb98be58f19"));
+            EmployeeResponse employeeUpd = employeeService.update(request, UUID.fromString("2977c373-d123-4edb-8085-59c21b36abf7"));
             System.out.println(employeeUpd.toString());*/
 
             //Изменение пароля
@@ -92,8 +84,8 @@ public class Application {
             //Поиск сотрудников
             /*SearchEmployeeRequest employeeRequest = SearchEmployeeRequest.builder()
                     //.firstName("Kacey")
-                    .middleName("Garlett")
-                    .account("klavigne9")
+                    //.middleName("Garlett")
+                    //.account("klavigne9")
                     .email("frosia@mail.com")
                     .build();
             List<EmployeeResponse> employeeList = employeeService.search(employeeRequest);
@@ -126,11 +118,11 @@ public class Application {
             projectService.updateStatus(ProjStatus.TEST, UUID.fromString("7f2c594b-a432-4620-ba72-92f48e2ac94b"));
 */
             //Поиск проекта
-            /*List<ProjStatus> projStatuses = new ArrayList<>();
+           /* List<ProjStatus> projStatuses = new ArrayList<>();
             projStatuses.add(ProjStatus.TEST);
             SearchProjRequest request = SearchProjRequest.builder()
                     .statuses(projStatuses)
-                    .projectName("projname2")
+                    //.projectName("projname2")
                     .build();
             List<ProjectResponse> search = projectService.search(request);
             for (ProjectResponse p : search) {
@@ -138,7 +130,7 @@ public class Application {
             }*/
 //---------TASK METHODS----------------------------
             //Создание задачи
-            Calendar calendar = Calendar.getInstance();
+            /*Calendar calendar = Calendar.getInstance();
             calendar.set(2022, Calendar.JUNE, 10, 5, 12, 12);
             SimpleDateFormat dayFormat = new SimpleDateFormat("yyyy-M-dd hh:mm:ss", Locale.getDefault());
             Date date = calendar.getTime();
@@ -149,8 +141,8 @@ public class Application {
                     .description("description123")
                     .hoursToCompleteTask(260)
                     .deadline(timestamp)
-                    .author(UUID.fromString("9dac079a-8111-4966-ace1-c22502a67a1c"))
-                    .executor(UUID.fromString("4833f7a0-277e-4d41-86fd-efe83dcae9b0"))
+                    .author(UUID.fromString("92087fd5-7b96-414f-a493-53611f15b77a"))
+                    .executor(UUID.fromString("92087fd5-7b96-414f-a493-53611f15b77a"))
                     .build();
             TaskRequest taskRequest2 = TaskRequest.builder()
                     .taskName("taskname2")
@@ -161,8 +153,8 @@ public class Application {
                     .executor(UUID.fromString("29dab1ce-1480-464c-8341-4d9c6545c923"))
                     .build();
             //Создание задачи
-            //TaskResponse task = taskService.create(taskRequest);
-            //System.out.println(task.toString());
+            TaskResponse task = taskService.create(taskRequest);
+            System.out.println(task.toString());*/
 
             //Изменение задачи
             /*TaskResponse update = taskService.update(taskRequest2, UUID.fromString("a80f745c-1dad-4680-8ff1-abe30a088e13"));
@@ -187,21 +179,21 @@ public class Application {
             //--TEAM--------------
 
             //Создание участника
-            TeamDto teamDto = TeamDto.builder()
-                    .member(UUID.fromString("77122fe1-7cc4-4701-8719-e63fb8418ac6"))
+            /*TeamDto teamDto = TeamDto.builder()
+                    .member(UUID.fromString("7703ea0a-3eda-4a76-a776-1fb975d169e0"))
                     .role(TeamRole.ANALYST)
-                    .project(UUID.fromString("d60b5f78-550d-4455-aaba-6afdbffb3c8a")).build();
+                    .project(UUID.fromString("fe5e6c35-2f02-4aa7-bb75-5397d3895f45")).build();
             TeamDto member = teamService.createMember(teamDto);
             System.out.println(member);
-
+*/
             //Получить всех
-            List<TeamDto> all = teamService.getAll();
+            /*List<TeamDto> all = teamService.getAll();
             for (TeamDto p : all) {
                 System.out.println(p.toString());
             }
 
             TeamDto teamDto1 = teamService.deleteMember(teamDto);
-            System.out.println(teamDto1.toString());
+            System.out.println(teamDto1.toString());*/
         };
     }
 

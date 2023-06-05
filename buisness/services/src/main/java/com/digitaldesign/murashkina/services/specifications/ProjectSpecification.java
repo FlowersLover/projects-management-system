@@ -1,92 +1,48 @@
 package com.digitaldesign.murashkina.services.specifications;
 
 import com.digitaldesign.murashkina.dto.enums.ProjStatus;
-import com.digitaldesign.murashkina.models.metamodels.Project_;
+import com.digitaldesign.murashkina.dto.request.project.SearchProjRequest;
 import com.digitaldesign.murashkina.models.project.Project;
-import jakarta.persistence.criteria.CriteriaBuilder;
-import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
-import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 
 @Component
 public class ProjectSpecification {
 
-    public Specification<Project> projectNameLike(String projectName) {
-
-        return new Specification<Project>() {
-            @Override
-            public Predicate toPredicate(Root<Project> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder criteriaBuilder) {
-                if (projectName == null) {
-                    return null;
-                }
-                return criteriaBuilder.like(root.get(Project_.PROJECT_NAME), "%" + projectName + "%");
+    public Specification<Project> getSpecification(SearchProjRequest searchProject) {
+        return ((root, query, criteriaBuilder) -> {
+            List<Predicate> predicates = new ArrayList<>();
+            if (!ObjectUtils.isEmpty(searchProject.getProjectName())) {
+                predicates.add(criteriaBuilder.equal(root.get("projectName"),
+                        searchProject.getProjectName()));
             }
-        };
-    }
-
-    public Specification<Project> statusEquals(List<ProjStatus> statuses) {
-
-        Specification<Project> specification = new Specification<Project>() {
-            @Override
-            public Predicate toPredicate(Root<Project> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder criteriaBuilder) {
-                return null;
+            if (!ObjectUtils.isEmpty(searchProject.getId())) {
+                predicates.add(criteriaBuilder.equal(root.get("id"),
+                        searchProject.getId()));
             }
-        };
-        for (
-                ProjStatus projectStatus : statuses) {
-            specification = specification.and(new Specification<Project>() {
-                @Override
-                public Predicate toPredicate(Root<Project> root,
-                                             CriteriaQuery<?> query,
-                                             CriteriaBuilder criteriaBuilder) {
-                    if (statuses == null) {
-                        return null;
-                    }
-                    return criteriaBuilder.equal(root.get(Project_.PROJECT_STATUS), projectStatus);
+            if (!ObjectUtils.isEmpty(searchProject.getStatuses())) {
+                List<ProjStatus> statuses = searchProject.getStatuses();
+                List<Predicate> statusesPredicates = new ArrayList<>();
+                statusesPredicates.add(criteriaBuilder.equal(root.get("projectStatus"), statuses.get(0)));
+                for (int i = 1; i < statuses.size(); i++) {
+                    statusesPredicates.add(criteriaBuilder.or(criteriaBuilder.equal(root.get("projectStatus"), statuses.get(i)),
+                            statusesPredicates.get(i - 1)));
                 }
-            });
-        }
-        return specification;
-    }
-
-
-   /* public Specification<Project> statusEquals(ProjStatus status) {
-
-        return new Specification<Project>() {
-            @Override
-            public Predicate toPredicate(Root<Project> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder criteriaBuilder) {
-                if (status == null) {
-                    return null;
-                }
-                return criteriaBuilder.equal(root.get(Project_.PROJECT_STATUS), status);
+                predicates.add(statusesPredicates.get(statusesPredicates.size() - 1));
             }
-        };
-    }*/
-
-    public Specification<Project> idEquals(UUID id) {
-        return new Specification<Project>() {
-            @Override
-            public Predicate toPredicate(Root<Project> root,
-                                         CriteriaQuery<?> query,
-                                         CriteriaBuilder criteriaBuilder) {
-                if (id == null) {
-                    return null;
-                }
-                return criteriaBuilder.equal(root.get(Project_.ID), id);
+            if (CollectionUtils.isEmpty(predicates)) {
+                return query.where().getRestriction();
+            } else {
+                return query.where(criteriaBuilder.and(predicates.toArray(Predicate[]::new))).getRestriction();
             }
-        };
+        });
     }
 
 }

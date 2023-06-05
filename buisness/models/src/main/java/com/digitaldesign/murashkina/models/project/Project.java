@@ -5,7 +5,6 @@ import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.lang.NonNull;
 
-import javax.validation.constraints.Size;
 import java.util.UUID;
 @Getter
 @Setter
@@ -21,11 +20,9 @@ public class Project {
 
     @Column(name = "project_name")
     @NonNull
-    @Size(min = 3, max = 50)
     private String projectName;
 
     @Column(name = "description")
-    @Size(min = 3, max = 150)
     private String description;
 
     @Column(name = "project_status")

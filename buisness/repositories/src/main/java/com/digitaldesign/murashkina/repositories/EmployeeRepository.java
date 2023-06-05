@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,17 +15,17 @@ import java.util.UUID;
 
 @Repository
 public interface EmployeeRepository extends JpaRepository<Employee, UUID>, JpaSpecificationExecutor<Employee> {
-    @Override
-    Optional<Employee> findById(UUID uuid);
 
-    @Modifying
-    @Query("update Employee e set e.password = ?1 where e.id = ?2")
-    void setEmployeePasswordById(String password, UUID userId);
-
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("update Employee e set e.status = ?1 where e.id = ?2")
     void setEmployeeStatusById(EStatus status, UUID userId);
 
     List<Employee> findAll(Specification<Employee> spec);
 
+    Boolean existsEmployeeByAccount(String account);
+
+    @Override
+    boolean existsById(UUID uuid);
+
+    Optional<Employee> findByAccount(String username);
 }

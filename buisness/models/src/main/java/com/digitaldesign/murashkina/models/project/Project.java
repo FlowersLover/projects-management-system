@@ -9,10 +9,10 @@ import java.util.UUID;
 @Getter
 @Setter
 @Builder
-@Entity
-@Table(name = "project")
 @AllArgsConstructor
 @ToString
+@Entity
+@Table(name = "project")
 public class Project {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)

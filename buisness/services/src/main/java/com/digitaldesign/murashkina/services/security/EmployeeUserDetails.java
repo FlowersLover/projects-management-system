@@ -9,12 +9,13 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 public class EmployeeUserDetails implements UserDetails {
-    private String username;
-    private String password;
-    private List<GrantedAuthority> authorities;
+    private final String username;
+    private final String password;
+    private final List<GrantedAuthority> authorities;
 
     public EmployeeUserDetails(Employee employee) {
         username = employee.getAccount();
@@ -22,7 +23,7 @@ public class EmployeeUserDetails implements UserDetails {
         if (employee.getRole() == null) {
             employee.setRole(ERole.ROLE_USER);
         }
-        authorities = List.of(employee.getRole().name()).stream()
+        authorities = Stream.of(employee.getRole().name())
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
     }

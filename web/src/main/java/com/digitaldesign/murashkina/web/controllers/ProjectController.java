@@ -7,6 +7,7 @@ import com.digitaldesign.murashkina.dto.request.project.UpdateProjectStatus;
 import com.digitaldesign.murashkina.dto.response.ProjectResponse;
 import com.digitaldesign.murashkina.services.ProjectService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -26,6 +27,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "Создание проекта")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping()
     public ResponseEntity<ProjectResponse> createProject(@RequestBody @Valid ProjectRequest request) {
         ProjectResponse projectResponse = projectService.create(request);
@@ -33,6 +35,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "Изменение проекта")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping(path = "/{projectId}")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable("projectId") String projectId, @RequestBody @Valid ProjectRequest request) {
         ProjectResponse update = projectService.update(request, UUID.fromString(projectId));
@@ -40,6 +43,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "Изменение статуса проекта")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping(path = "/status/{projectId}")
     public ResponseEntity<ProjectResponse> updateStatus(@PathVariable("projectId") String projectId,
                                                         @RequestBody @Valid UpdateProjectStatus request) {
@@ -48,6 +52,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "Получить информацию о проекте")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{projectId}")
     public ResponseEntity<ProjectResponse> getProject(@PathVariable("projectId") String projectId) {
         ProjectResponse projectResponse = projectService.findById(UUID.fromString(projectId));
@@ -55,6 +60,7 @@ public class ProjectController {
     }
 
     @Operation(summary = "Поиск проекта")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping(value = "/search", params = {"id", "statuses", "projectName"})
     public ResponseEntity<List<ProjectResponse>> searchProject(@RequestParam(value = "id", required = false) UUID id,
                                                                @RequestParam(value = "statuses", required = false) List<ProjStatus> statuses,

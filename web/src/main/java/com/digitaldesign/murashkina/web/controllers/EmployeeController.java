@@ -6,6 +6,7 @@ import com.digitaldesign.murashkina.services.EmployeeService;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeDeletedException;
 import com.digitaldesign.murashkina.services.security.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -56,6 +57,7 @@ public class EmployeeController {
     }
 
     @Operation(summary = "Изменение сотрудника")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping(path = "/{employeeId}")
     public ResponseEntity<EmployeeResponse> updateEmployee(@PathVariable("employeeId") String employeeId,
                                                            @RequestBody @Valid UpdateEmployeeRequest request) {
@@ -64,6 +66,7 @@ public class EmployeeController {
     }
 
     @Operation(summary = "Изменение пароля сотрудника")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping(path = "/password/{employeeId}")
     public ResponseEntity<EmployeeResponse> updatePassword(@PathVariable("employeeId") String employeeId, @RequestBody @Valid UpdatePasswordRequest request) {
         EmployeeResponse employeeResponse = employeeService.updatePassword(request, UUID.fromString(employeeId));
@@ -71,6 +74,7 @@ public class EmployeeController {
     }
 
     @Operation(summary = "Удаление сотрудника")
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping(path = "/{employeeId}")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<EmployeeResponse> deleteEmploye(@PathVariable("employeeId") String employeeId) {
@@ -80,6 +84,7 @@ public class EmployeeController {
     }
 
     @Operation(summary = "Получить информацию о сотруднике")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeResponse> getEmployeeInfo(@PathVariable("employeeId") String employeeId) {
         EmployeeResponse employeeResponse = employeeService.getInfo(UUID.fromString(employeeId));
@@ -87,6 +92,7 @@ public class EmployeeController {
     }
 
     @Operation(summary = "Поиск сотрудника")
+    @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping(value = "/search", params = {"account", "lastName", "firstName", "middleName", "email"})
     public ResponseEntity<List<EmployeeResponse>> searchEmployee(@RequestParam(value = "account", required = false) String account,
                                                                  @RequestParam(value = "lastName", required = false) String lastName,

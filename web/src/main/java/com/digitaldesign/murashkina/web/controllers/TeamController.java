@@ -6,6 +6,7 @@ import com.digitaldesign.murashkina.services.EmployeeService;
 import com.digitaldesign.murashkina.services.ProjectService;
 import com.digitaldesign.murashkina.services.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,6 +28,7 @@ public class TeamController {
     }
 
     @Operation(summary = "Создание участника проекта")
+    @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping()
     public ResponseEntity<TeamDto> createMember(@RequestBody @Valid TeamDto request) {
         TeamDto member = teamService.createMember(request);
@@ -34,6 +36,7 @@ public class TeamController {
     }
 
     @Operation(summary = "Удаление участника проекта")
+    @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping()
     public ResponseEntity<TeamDto> deleteMember(@RequestBody DeleteMember request) {
         TeamDto teamDto = teamService.deleteMember(request);

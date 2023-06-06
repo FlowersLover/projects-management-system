@@ -2,8 +2,6 @@ package com.digitaldesign.murashkina.web.controllers;
 
 import com.digitaldesign.murashkina.dto.request.team.DeleteMember;
 import com.digitaldesign.murashkina.dto.request.team.TeamDto;
-import com.digitaldesign.murashkina.services.EmployeeService;
-import com.digitaldesign.murashkina.services.ProjectService;
 import com.digitaldesign.murashkina.services.TeamService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -18,13 +16,9 @@ import org.springframework.web.bind.annotation.*;
 @Tag(name = "TeamController", description = "Контроллер команды")
 public class TeamController {
     private final TeamService teamService;
-    private final EmployeeService employeeService;
-    private final ProjectService projectService;
 
-    public TeamController(TeamService teamService, EmployeeService employeeService, ProjectService projectService) {
+    public TeamController(TeamService teamService) {
         this.teamService = teamService;
-        this.employeeService = employeeService;
-        this.projectService = projectService;
     }
 
     @Operation(summary = "Создание участника проекта")

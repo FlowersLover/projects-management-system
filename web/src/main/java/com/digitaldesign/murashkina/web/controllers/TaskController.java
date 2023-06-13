@@ -15,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -33,25 +32,23 @@ public class TaskController {
     @Operation(summary = "Создание задачи")
     @SecurityRequirement(name = "Bearer Authentication")
     @PostMapping()
-    public ResponseEntity<TaskResponse> createTask(@RequestBody @Valid TaskRequest request, Principal principal) {
-        TaskResponse taskResponse = taskService.create(request, principal.getName());
+    public ResponseEntity<TaskResponse> createTask(@RequestBody @Valid TaskRequest request) {
+        TaskResponse taskResponse = taskService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(taskResponse);
     }
-
     @Operation(summary = "Изменение задачи")
     @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping(path = "/{taskId}")
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable("taskId") String taskId, @RequestBody @Valid UpdateTaskRequest request, Principal principal) {
-        TaskResponse taskResponse = taskService.update(request, UUID.fromString(taskId), principal.getName());
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable("taskId") String taskId, @RequestBody @Valid UpdateTaskRequest request) {
+        TaskResponse taskResponse = taskService.update(request, UUID.fromString(taskId));
         return ResponseEntity.ok(taskResponse);
     }
 
     @Operation(summary = "Изменение статуса задачи")
     @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping(path = "/status/{taskId}")
-    public ResponseEntity<TaskResponse> updateStatus(@PathVariable("taskId") String taskId, @RequestBody UpdateTaskStatusRequest request, Principal principal) {
-        System.out.println("WWWWWWw");
-        TaskResponse taskResponse = taskService.updateStatus(request, UUID.fromString(taskId), principal.getName());
+    public ResponseEntity<TaskResponse> updateStatus(@PathVariable("taskId") String taskId, @RequestBody UpdateTaskStatusRequest request) {
+        TaskResponse taskResponse = taskService.updateStatus(request, UUID.fromString(taskId));
         return ResponseEntity.ok(taskResponse);
     }
 
@@ -59,13 +56,13 @@ public class TaskController {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{taskId}")
     public ResponseEntity<TaskResponse> getTask(@PathVariable("taskId") String taskId) {
-        TaskResponse task = taskService.findById(UUID.fromString(taskId));
+        TaskResponse task = taskService.getTask(UUID.fromString(taskId));
         return ResponseEntity.ok(task);
     }
 
     @Operation(summary = "Поиск задачи")
     @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping(value = "/search", params = {"taskName", "executor", "author", "deadline", "createdAt", "status"})
+    @GetMapping(value = "/search")
     public List<TaskResponse> searchTask(@RequestParam(value = "taskName", required = false) String taskName,
                                          @RequestParam(value = "executor", required = false) UUID executor,
                                          @RequestParam(value = "author", required = false) UUID author,

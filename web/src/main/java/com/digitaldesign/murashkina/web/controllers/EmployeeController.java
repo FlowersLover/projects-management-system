@@ -1,6 +1,7 @@
 package com.digitaldesign.murashkina.web.controllers;
 
 import com.digitaldesign.murashkina.dto.request.employee.*;
+import com.digitaldesign.murashkina.dto.response.AuthResponse;
 import com.digitaldesign.murashkina.dto.response.EmployeeResponse;
 import com.digitaldesign.murashkina.services.EmployeeService;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeDeletedException;
@@ -16,7 +17,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -37,16 +37,17 @@ public class EmployeeController {
     }
 
     @PostMapping("/authenticate")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getAccount(), authRequest.getPassword()));
-        if (employeeService.findByAccount(authRequest.getAccount()).getStatus().name().equals("BLOCKED")) {
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getAccount(), authRequest.getPassword()));
+       if (employeeService.findByAccount(authRequest.getAccount()).getStatus().name().equals("BLOCKED")) {
             throw new EmployeeDeletedException();
         }
-        if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getAccount());
-        } else {
-            throw new UsernameNotFoundException("invalid user request!");
+        if(authentication.isAuthenticated()){
+            return ResponseEntity.ok(AuthResponse.builder().jwtToken(jwtService.generateToken(authRequest.getAccount())).build());
+        }else {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неверный логин или пароль");
         }
+
     }
 
     @Operation(summary = "Создание сотрудника")
@@ -77,9 +78,9 @@ public class EmployeeController {
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping(path = "/{employeeId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<EmployeeResponse> deleteEmploye(@PathVariable("employeeId") String employeeId) {
+    public ResponseEntity<EmployeeResponse> deleteEmployee(@PathVariable("employeeId") String employeeId) {
         employeeService.delete(UUID.fromString(employeeId));
-        EmployeeResponse employeeResponse = employeeService.getInfo(UUID.fromString(employeeId));
+        EmployeeResponse employeeResponse = employeeService.getEmployee(UUID.fromString(employeeId));
         return ResponseEntity.ok().body(employeeResponse);
     }
 
@@ -87,13 +88,13 @@ public class EmployeeController {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeResponse> getEmployeeInfo(@PathVariable("employeeId") String employeeId) {
-        EmployeeResponse employeeResponse = employeeService.getInfo(UUID.fromString(employeeId));
+        EmployeeResponse employeeResponse = employeeService.getEmployee(UUID.fromString(employeeId));
         return ResponseEntity.ok(employeeResponse);
     }
 
     @Operation(summary = "Поиск сотрудника")
     @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping(value = "/search", params = {"account", "lastName", "firstName", "middleName", "email"})
+    @GetMapping(value = "/search")
     public ResponseEntity<List<EmployeeResponse>> searchEmployee(@RequestParam(value = "account", required = false) String account,
                                                                  @RequestParam(value = "lastName", required = false) String lastName,
                                                                  @RequestParam(value = "firstName", required = false) String firstName,

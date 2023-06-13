@@ -20,12 +20,7 @@ public interface EmployeeRepository extends JpaRepository<Employee, UUID>, JpaSp
     @Query("update Employee e set e.status = ?1 where e.id = ?2")
     void setEmployeeStatusById(EStatus status, UUID userId);
 
-    List<Employee> findAll(Specification<Employee> spec);
-
     Boolean existsEmployeeByAccount(String account);
-
-    @Override
-    boolean existsById(UUID uuid);
 
     Optional<Employee> findByAccount(String username);
 }

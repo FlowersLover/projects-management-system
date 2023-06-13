@@ -9,16 +9,16 @@ import com.digitaldesign.murashkina.services.exceptions.task.*;
 import com.digitaldesign.murashkina.services.exceptions.team.EmployeeAlreadyInTeamException;
 import com.digitaldesign.murashkina.services.exceptions.team.InvalidTeamRoleException;
 import com.digitaldesign.murashkina.services.exceptions.team.MemberNotFoundException;
+import com.digitaldesign.murashkina.services.exceptions.team.TeamIsNullException;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,6 +34,10 @@ public class AppExceptionHandler  {
         });
         return errorMap;
     }
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<AwesomeException> handleAuthenticationException() {
+        return new ResponseEntity<>(new AwesomeException("Неправильный логин или пароль"), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(InvalidProjectStatusException.class)
     public ResponseEntity<AwesomeException> handleInvalidProjectStatusException() {
         return new ResponseEntity<>(new AwesomeException("Статус проекта может иметь значения  DRAFT, " +
@@ -41,7 +45,14 @@ public class AppExceptionHandler  {
                 "TEST," +
                 "COMPLETED"), HttpStatus.BAD_REQUEST);
     }
-
+    @ExceptionHandler(TeamIsNullException.class)
+    protected ResponseEntity<AwesomeException> handleTeamIsNullException() {
+        return new ResponseEntity<>(new AwesomeException("TeamRequest имеет значение null"), HttpStatus.BAD_REQUEST);
+    }
+    @ExceptionHandler(SearchRequestIsNullException.class)
+    protected ResponseEntity<AwesomeException> handleSearchRequestIsNullException() {
+        return new ResponseEntity<>(new AwesomeException("Поисковый запрос имеет значение null"), HttpStatus.BAD_REQUEST);
+    }
     @ExceptionHandler(InvalidTaskStatusException.class)
     protected ResponseEntity<AwesomeException> handleInvalidTaskStatusException() {
         return new ResponseEntity<>(new AwesomeException("Статус задачи может иметь значения NEW, IN_PROGRESS, COMPLETED, CLOSED"), HttpStatus.FORBIDDEN);
@@ -77,7 +88,7 @@ public class AppExceptionHandler  {
         return new ResponseEntity<>(new AwesomeException("Сотрудник пустой"), HttpStatus.BAD_REQUEST);
     }
 
-    @ExceptionHandler(PasswordsNotMatchException.class)
+    @ExceptionHandler(PasswordsMismatchException.class)
     protected ResponseEntity<AwesomeException> handlePasswordsNotMatchException() {
         return new ResponseEntity<>(new AwesomeException("Пароли не совпадают"), HttpStatus.BAD_REQUEST);
     }
@@ -99,7 +110,7 @@ public class AppExceptionHandler  {
 
     @ExceptionHandler(EmployeeNotMemberOfTeamException.class)
     protected ResponseEntity<AwesomeException> handleExecutorNotMemberOfTeamException() {
-        return new ResponseEntity<>(new AwesomeException("Исполнитель не является участником команды"), HttpStatus.BAD_REQUEST);
+        return new ResponseEntity<>(new AwesomeException("Сотрудник не является участником команды"), HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler(TaskIsNullException.class)

@@ -44,26 +44,20 @@ public class ProjectService {
 
 
     public ProjectResponse update(ProjectRequest request, UUID id) {
-        projectIsExist(id);
+        projectNotFound(id);
         Optional<Project> project = projectRepository.findById(id);
         Project newpProject = projectMapper.toEntity(request);
-        newpProject.setId(project.get().getId());
+        newpProject.setProjectId(project.get().getProjectId());
         newpProject.setProjectStatus(project.get().getProjectStatus());
         projectRepository.save(newpProject);
         return projectMapper.toDto(newpProject);
     }
 
-    private void invalidProjectStatusException(String status) {
-        if (!EnumUtils.isValidEnum(ProjStatus.class, status)) {
-            throw new InvalidProjectStatusException();
-        }
-    }
-
     @Transactional
     public ProjectResponse updateStatus(String status, UUID id) {
-        projectIsExist(id);
-        statusIsAviable(ProjStatus.valueOf(status), id);
+        projectNotFound(id);
         invalidProjectStatusException(status);
+        statusIsAviable(ProjStatus.valueOf(status), id);
         projectRepository.setProjectStatusById(ProjStatus.valueOf(status), id);
         Project project = projectRepository.findById(id).get();
         return projectMapper.toDto(project);
@@ -75,10 +69,15 @@ public class ProjectService {
         return projects.stream().map(projectMapper::toDto).collect(Collectors.toList());
     }
 
-    public ProjectResponse findById(UUID uuid) {
-        projectIsExist(uuid);
+    public ProjectResponse getProject(UUID uuid) {
+        projectNotFound(uuid);
         Optional<Project> project = projectRepository.findById(uuid);
         return projectMapper.toDto(project.get());
+    }
+    private void invalidProjectStatusException(String status) {
+        if (!EnumUtils.isValidEnum(ProjStatus.class, status)) {
+            throw new InvalidProjectStatusException();
+        }
     }
 
     public boolean existById(String projectId) {
@@ -88,11 +87,11 @@ public class ProjectService {
     private void projectIsNull(ProjectRequest createRequest) {
         if (createRequest == null
                 || createRequest.getProjectName() == null) {
-            throw new ProjectIsNullException();
+            throw new ProjectIsNullException("Project is Null");
         }
     }
 
-    private void projectIsExist(UUID id) {
+    private void projectNotFound(UUID id) {
         if (!existById(id.toString())) {
             throw new ProjectNotFoundException();
         }

@@ -19,6 +19,8 @@ import com.digitaldesign.murashkina.services.exceptions.task.*;
 import com.digitaldesign.murashkina.services.mapping.TaskMapper;
 import com.digitaldesign.murashkina.services.specifications.TaskSpecification;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -42,29 +44,11 @@ public class TaskService {
         this.taskMapper = taskMapper;
     }
 
-    private void taskIsNull(TaskRequest taskRequest) {
-        if (taskRequest == null
-                || taskRequest.getTaskName() == null
-                || taskRequest.getHoursToCompleteTask() == null
-                || taskRequest.getDeadline() == null) {
-            throw new TaskIsNullException();
-        }
-    }
-
-
-    public void checkEmployeeInTeam(UUID projectId, String employeeAccount) {
-        Optional<Employee> employee = employeeRepository.findByAccount(employeeAccount);
-        Optional<Project> project = projectRepository.findById(projectId);
-        if (!teamRepository.existsById(TeamId.builder().member(employee.get()).project(project.get()).build())) {
-            throw new EmployeeNotMemberOfTeamException();
-        }
-    }
-
-
-    public TaskResponse create(TaskRequest taskRequest, String currentUser) {
-        //создать задачу проекта может только участник проекта
+    public TaskResponse create(TaskRequest taskRequest) {
         taskIsNull(taskRequest);
-        EmployeeService.employeeIsDeleted(employeeRepository.findById(taskRequest.getExecutor()).get());
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = authentication.getName();
+        EmployeeService.employeeDeleted(employeeRepository.findById(taskRequest.getExecutor()).get());
         checkEmployeeInTeam(taskRequest.getProject(), currentUser);
         checkEmployeeInTeam(taskRequest.getProject(), employeeRepository.findById(taskRequest.getExecutor()).get().getAccount());
         Task task = taskMapper.toEntity(taskRequest);
@@ -77,16 +61,17 @@ public class TaskService {
         return taskMapper.toDto(task);
     }
 
-    public TaskResponse update(UpdateTaskRequest updateTaskRequest, UUID id, String currentUser) {
+    public TaskResponse update(UpdateTaskRequest updateTaskRequest, UUID id) {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = authentication.getName();
         TaskRequest taskRequest = taskMapper.toDto(updateTaskRequest);
         taskIsNull(taskRequest);
         taskNotFound(id);
         employeeNotFound(taskRequest);
-        EmployeeService.employeeIsDeleted(employeeRepository.findById(updateTaskRequest.getExecutor()).get());
+        EmployeeService.employeeDeleted(employeeRepository.findById(updateTaskRequest.getExecutor()).get());
         Optional<Task> task = taskRepository.findById(id);
-        checkEmployeeInTeam(task.get().getProjectId().getId(), currentUser);
-        checkEmployeeInTeam(task.get().getProjectId().getId(), employeeRepository.findById(updateTaskRequest.getExecutor()).get().getAccount());
-
+        checkEmployeeInTeam(task.get().getProjectId().getProjectId(), currentUser);
+        checkEmployeeInTeam(task.get().getProjectId().getProjectId(), employeeRepository.findById(updateTaskRequest.getExecutor()).get().getAccount());
         Task newTask = taskMapper.toEntity(taskRequest);
         newTask.setLastChanged(new Date());
         newTask.setStatus(task.get().getStatus());
@@ -98,21 +83,17 @@ public class TaskService {
         return taskMapper.toDto(newTask);
     }
 
-    private void invalidTaskStatusException(String status) {
-        if (!EnumUtils.isValidEnum(TaskStatus.class, status)) {
-            throw new InvalidTaskStatusException();
-        }
-    }
-
-    public TaskResponse updateStatus(UpdateTaskStatusRequest taskStatusRequest, UUID id, String currentUser) {
+    public TaskResponse updateStatus(UpdateTaskStatusRequest taskStatusRequest, UUID id) {
         taskStatusIsNull(taskStatusRequest);
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String currentUser = authentication.getName();
         taskNotFound(id);
-        invalidTaskStatusException(taskStatusRequest.getStatus());
+        invalidTaskStatus(taskStatusRequest.getStatus());
         TaskStatus taskStatus = TaskStatus.valueOf(taskStatusRequest.getStatus());
         statusNotAviable(id, taskStatus);
 
         Optional<Task> task = taskRepository.findById(id);
-        checkEmployeeInTeam(task.get().getProjectId().getId(), currentUser);
+        checkEmployeeInTeam(task.get().getProjectId().getProjectId(), currentUser);
         Task newtask = task.get();
         newtask.setStatus(taskStatus);
         newtask.setLastChanged(new Date());
@@ -121,27 +102,34 @@ public class TaskService {
     }
 
     public List<TaskResponse> search(SearchTaskRequest searchFilter) {
+        searchFilterIsNull(searchFilter);
         List<Task> taskList = taskRepository.findAll(
                 ts.getSpecification(searchFilter));
-        taskList.sort(new Comparator<Task>() {
-            @Override
-            public int compare(Task t1, Task t2) {
-                if (t1.getCreatedAt().equals(t2.getCreatedAt())) return 0;
-                else if (t1.getCreatedAt().before(t2.getCreatedAt())) return 1;
-                else return -1;
-            }
+        List<Task> newList = new ArrayList(Collections.unmodifiableList(taskList));
+        newList.sort((t1, t2) -> {
+            if (t1.getCreatedAt().equals(t2.getCreatedAt())) return 0;
+            else if (t1.getCreatedAt().before(t2.getCreatedAt())) return 1;
+            else return -1;
         });
         return taskList.stream()
                 .map(taskMapper::toDto).collect(Collectors.toList());
     }
 
-    public TaskResponse findById(UUID uuid) {
+    private void searchFilterIsNull(SearchTaskRequest searchFilter) {
+        if (searchFilter == null) {
+            throw new SearchRequestIsNullException();
+        }
+    }
+
+    public TaskResponse getTask(UUID uuid) {
         taskNotFound(uuid);
         return taskMapper.toDto(taskRepository.findById(uuid).get());
     }
 
-    public boolean existById(UUID id) {
-        return taskRepository.existsById(id);
+    private void invalidTaskStatus(String status) {
+        if (!EnumUtils.isValidEnum(TaskStatus.class, status)) {
+            throw new InvalidTaskStatusException();
+        }
     }
 
     public boolean taskStatusIsAviable(UUID taskId, TaskStatus status) {
@@ -155,9 +143,16 @@ public class TaskService {
         }
     }
 
+    public void checkEmployeeInTeam(UUID projectId, String employeeAccount) {
+        Optional<Employee> employee = employeeRepository.findByAccount(employeeAccount);
+        Optional<Project> project = projectRepository.findById(projectId);
+        if (!teamRepository.existsById(TeamId.builder().member(employee.get()).project(project.get()).build())) {
+            throw new EmployeeNotMemberOfTeamException();
+        }
+    }
 
     private void taskNotFound(UUID id) {
-        if (!existById(id)) {
+        if (!taskRepository.existsById(id)) {
             throw new TaskNotFoundException();
         }
     }
@@ -171,6 +166,15 @@ public class TaskService {
     private void statusNotAviable(UUID id, TaskStatus status) {
         if (!taskStatusIsAviable(id, status)) {
             throw new TaskStatusNotAviableException();
+        }
+    }
+
+    private void taskIsNull(TaskRequest taskRequest) {
+        if (taskRequest == null
+                || taskRequest.getTaskName() == null
+                || taskRequest.getHoursToCompleteTask() == null
+                || taskRequest.getDeadline() == null) {
+            throw new TaskIsNullException();
         }
     }
 }

@@ -19,6 +19,10 @@ public class TaskMapper {
         Task task = this.modelMapper.map(request, Task.class);
         return task;
     }
+    public Task toEntity(UpdateTaskRequest request) {
+        Task task = this.modelMapper.map(request, Task.class);
+        return task;
+    }
 
     public TaskRequest toDto(UpdateTaskRequest request) {
         TaskRequest task = this.modelMapper.map(request, TaskRequest.class);
@@ -26,9 +30,6 @@ public class TaskMapper {
     }
 
     public TaskResponse toDto(Task model) {
-        //TaskResponse dto = this.modelMapper.map(model, TaskResponse.class);
-        //return dto;
-
         TaskResponse dto = TaskResponse.builder()
                 .executor(model.getExecutor().getId())
                 .author(model.getAuthor().getId())

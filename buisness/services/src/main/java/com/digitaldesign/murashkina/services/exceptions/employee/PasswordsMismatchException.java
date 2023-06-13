@@ -4,5 +4,5 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(code = HttpStatus.BAD_REQUEST, reason = "Пароли не совпадают")
-public class PasswordsNotMatchException extends RuntimeException {
+public class PasswordsMismatchException extends RuntimeException {
 }

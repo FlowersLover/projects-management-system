@@ -46,7 +46,7 @@
     </changeSet>
     <changeSet author="murashkina" id="2">
         <createTable tableName="project">
-            <column name="id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
+            <column name="project_id" type="${uuid_type}" defaultValueComputed="${uuid_function}">
                 <constraints nullable="false" primaryKey="true" unique="true"/>
             </column>
             <column name="project_name" type="VARCHAR(50)">
@@ -78,7 +78,7 @@
                                  constraintName="member_id"/>
         <addForeignKeyConstraint baseColumnNames="project"
                                  baseTableName="team"
-                                 referencedColumnNames="id"
+                                 referencedColumnNames="project_id"
                                  referencedTableName="project"
                                  constraintName="project_id"/>
     </changeSet>
@@ -99,8 +99,8 @@
             <column name="author" type="${uuid_type}">
                 <constraints nullable="false"/>
             </column>
-            <column name="deadline" type="timestamp">
-                <constraints nullable="false"/>
+            <column name="deadline" type="timestamp" >
+                <constraints nullable="false" />
             </column>
             <column name="last_changed" type="timestamp"/>
             <column name="created_at" type="timestamp" defaultValueDate="${now}">

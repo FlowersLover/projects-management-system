@@ -19,7 +19,7 @@ public class TeamMapper {
     public TeamDto toDto(Team model) {
         TeamDto dto = TeamDto.builder()
                 .member(model.getTeamId().getMember().getId())
-                .project(model.getTeamId().getProject().getId())
+                .project(model.getTeamId().getProject().getProjectId())
                 .role(model.getRole().name()).build();
         return dto;
     }

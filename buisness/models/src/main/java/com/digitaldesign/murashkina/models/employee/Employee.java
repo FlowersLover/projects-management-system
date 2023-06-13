@@ -47,7 +47,7 @@ public class Employee implements Serializable {
 
     private String email;
 
-    @NonNull
+    //@NonNull
     @Enumerated(EnumType.STRING)
     private EStatus status;
 

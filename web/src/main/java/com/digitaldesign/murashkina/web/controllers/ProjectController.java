@@ -10,6 +10,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -21,7 +22,6 @@ import java.util.UUID;
 @Tag(name = "ProjectController", description = "Контроллер проекта")
 public class ProjectController {
     private final ProjectService projectService;
-
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }
@@ -31,7 +31,7 @@ public class ProjectController {
     @PostMapping()
     public ResponseEntity<ProjectResponse> createProject(@RequestBody @Valid ProjectRequest request) {
         ProjectResponse projectResponse = projectService.create(request);
-        return ResponseEntity.ok(projectResponse);
+        return ResponseEntity.status(HttpStatus.CREATED).body(projectResponse);
     }
 
     @Operation(summary = "Изменение проекта")
@@ -39,7 +39,7 @@ public class ProjectController {
     @PutMapping(path = "/{projectId}")
     public ResponseEntity<ProjectResponse> updateProject(@PathVariable("projectId") String projectId, @RequestBody @Valid ProjectRequest request) {
         ProjectResponse update = projectService.update(request, UUID.fromString(projectId));
-        return ResponseEntity.ok(update);
+        return ResponseEntity.status(HttpStatus.OK).body(update);
     }
 
     @Operation(summary = "Изменение статуса проекта")
@@ -55,13 +55,13 @@ public class ProjectController {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{projectId}")
     public ResponseEntity<ProjectResponse> getProject(@PathVariable("projectId") String projectId) {
-        ProjectResponse projectResponse = projectService.findById(UUID.fromString(projectId));
+        ProjectResponse projectResponse = projectService.getProject(UUID.fromString(projectId));
         return ResponseEntity.ok(projectResponse);
     }
 
     @Operation(summary = "Поиск проекта")
     @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping(value = "/search", params = {"id", "statuses", "projectName"})
+    @GetMapping(value = "/search")
     public ResponseEntity<List<ProjectResponse>> searchProject(@RequestParam(value = "id", required = false) UUID id,
                                                                @RequestParam(value = "statuses", required = false) List<ProjStatus> statuses,
                                                                @RequestParam(value = "projectName", required = false) String projectName) {
@@ -73,6 +73,5 @@ public class ProjectController {
         List<ProjectResponse> search = projectService.search(request);
         return ResponseEntity.ok(search);
     }
-
 }
 

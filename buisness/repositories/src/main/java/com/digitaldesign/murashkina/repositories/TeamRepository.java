@@ -11,10 +11,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface TeamRepository extends JpaRepository<Team, TeamId> {
-    @Modifying
+    @Modifying(clearAutomatically = true, flushAutomatically = true)
     @Query("delete from Team t where t.teamId.project = ?1 and t.teamId.member = ?2")
     void deleteMember(Project project, Employee member);
 
-    @Override
-    boolean existsById(TeamId teamId);
 }

@@ -96,7 +96,7 @@ public class Application {
 //---------PROJECT methods--------------------------------------------------------
             //Создание проекта
             /*ProjectRequest projectRequest = ProjectRequest.builder()
-                    .projectName("projname123456")
+                    .projectName(null)
                     .description("описание2")
                     .build();
             ProjectResponse project = projectService.create(projectRequest);

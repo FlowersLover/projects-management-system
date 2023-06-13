@@ -1,6 +1,7 @@
 package com.digitaldesign.murashkina.services;
 
 import com.digitaldesign.murashkina.dto.enums.TeamRole;
+import com.digitaldesign.murashkina.dto.request.employee.EmployeeRequest;
 import com.digitaldesign.murashkina.dto.request.team.DeleteMember;
 import com.digitaldesign.murashkina.dto.request.team.TeamDto;
 import com.digitaldesign.murashkina.models.employee.Employee;
@@ -10,11 +11,13 @@ import com.digitaldesign.murashkina.models.team.TeamId;
 import com.digitaldesign.murashkina.repositories.EmployeeRepository;
 import com.digitaldesign.murashkina.repositories.ProjectRepository;
 import com.digitaldesign.murashkina.repositories.TeamRepository;
+import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeIsNullException;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeNotFoundException;
 import com.digitaldesign.murashkina.services.exceptions.project.ProjectNotFoundException;
 import com.digitaldesign.murashkina.services.exceptions.team.EmployeeAlreadyInTeamException;
 import com.digitaldesign.murashkina.services.exceptions.team.InvalidTeamRoleException;
 import com.digitaldesign.murashkina.services.exceptions.team.MemberNotFoundException;
+import com.digitaldesign.murashkina.services.exceptions.team.TeamIsNullException;
 import com.digitaldesign.murashkina.services.mapping.TeamMapper;
 import org.apache.commons.lang3.EnumUtils;
 import org.springframework.stereotype.Service;
@@ -40,11 +43,12 @@ public class TeamService {
     }
 
     public TeamDto createMember(TeamDto teamRequest) {
+        teamIsNull(teamRequest);
         employeeNotFound(teamRequest.getMember());
         projectNotFound(teamRequest.getProject());
         employeeAlreadyInTeam(teamRequest);
-        EmployeeService.employeeIsDeleted(employeeRepository.findById(teamRequest.getMember()).get());
-        invalidTeamRoleException(teamRequest.getRole());
+        EmployeeService.employeeDeleted(employeeRepository.findById(teamRequest.getMember()).get());
+        invalidTeamRole(teamRequest.getRole());
         Optional<Employee> member = employeeRepository.findById(teamRequest.getMember());
         Optional<Project> project = projectRepository.findById(teamRequest.getProject());
         TeamId teamId = TeamId.builder()
@@ -54,8 +58,8 @@ public class TeamService {
                 .role(TeamRole.valueOf(teamRequest.getRole()))
                 .teamId(teamId)
                 .build();
-        teamRepository.save(team);
-        return teamMapper.toDto(team);
+        Team savedMember = teamRepository.save(team);
+        return teamMapper.toDto(savedMember);
     }
 
     @Transactional
@@ -65,13 +69,11 @@ public class TeamService {
         memberNotFound(teamRequest);
         Optional<Employee> member = employeeRepository.findById(teamRequest.getMember());
         Optional<Project> project = projectRepository.findById(teamRequest.getProject());
-        Optional<Team> teamById = teamRepository.findById(TeamId.builder().member(member.get()).project(project.get()).build());
-        Team team = Team.builder().role(teamById.get().getRole())
-                .teamId(TeamId.builder()
-                        .member(member.get())
-                        .project(project.get())
-                        .build())
+        TeamId teamId = TeamId.builder()
+                .member(member.get())
+                .project(project.get())
                 .build();
+        Team team = teamRepository.findById(teamId).get();
         teamRepository.deleteMember(team.getTeamId().getProject(), team.getTeamId().getMember());
         return teamMapper.toDto(team);
     }
@@ -80,7 +82,16 @@ public class TeamService {
         return teamRepository.findAll().stream().map(team -> teamMapper.toDto(team)).collect(Collectors.toList());
     }
 
-    private void invalidTeamRoleException(String role) {
+    private void teamIsNull(TeamDto request) {
+        if (request == null
+                || request.getProject() == null
+                || request.getMember() == null
+                || request.getRole() == null) {
+            throw new TeamIsNullException();
+        }
+    }
+
+    private void invalidTeamRole(String role) {
         if (!EnumUtils.isValidEnum(TeamRole.class, role)) {
             throw new InvalidTeamRoleException();
         }
@@ -99,23 +110,18 @@ public class TeamService {
     }
 
     private void employeeAlreadyInTeam(TeamDto teamRequest) {
-        if (existById(teamRequest.getMember(), teamRequest.getProject())) {
+        if (teamRepository.existsById(TeamId.builder()
+                .project(projectRepository.findById(teamRequest.getProject()).get())
+                .member(employeeRepository.findById(teamRequest.getMember()).get()).build())) {
             throw new EmployeeAlreadyInTeamException();
         }
     }
 
     private void memberNotFound(DeleteMember teamRequest) {
-        if (!existById(teamRequest.getMember(), teamRequest.getProject())) {
+        if (!teamRepository.existsById(TeamId.builder()
+                .project(projectRepository.findById(teamRequest.getProject()).get())
+                .member(employeeRepository.findById(teamRequest.getMember()).get()).build())) {
             throw new MemberNotFoundException();
         }
-    }
-
-    public boolean existById(UUID member, UUID project) {
-        if (teamRepository.existsById(TeamId.builder()
-                .project(projectRepository.findById(project).get())
-                .member(employeeRepository.findById(member).get()).build())) {
-            return true;
-        }
-        return false;
     }
 }

@@ -16,8 +16,6 @@ import java.util.UUID;
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, UUID>, JpaSpecificationExecutor<Project> {
     @Modifying(clearAutomatically = true, flushAutomatically = true)
-    @Query("update Project p set p.projectStatus = ?1 where p.id = ?2")
+    @Query("update Project p set p.projectStatus = ?1 where p.projectId = ?2")
     void setProjectStatusById(ProjStatus status, UUID id);
-
-    List<Project> findAll(Specification<Project> spec);
 }

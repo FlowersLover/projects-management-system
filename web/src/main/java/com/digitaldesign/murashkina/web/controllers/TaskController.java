@@ -36,6 +36,7 @@ public class TaskController {
         TaskResponse taskResponse = taskService.create(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(taskResponse);
     }
+
     @Operation(summary = "Изменение задачи")
     @SecurityRequirement(name = "Bearer Authentication")
     @PutMapping(path = "/{taskId}")

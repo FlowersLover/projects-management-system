@@ -6,7 +6,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class DateFormater {
-        public static String formatDate(Date date) {
+    public static String formatDate(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         format.setTimeZone(TimeZone.getTimeZone("UTC"));
         return format.format(date);

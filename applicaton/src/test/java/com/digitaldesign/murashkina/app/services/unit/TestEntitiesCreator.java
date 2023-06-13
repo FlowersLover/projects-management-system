@@ -23,6 +23,7 @@ public class TestEntitiesCreator {
                 .build();
         return employee;
     }
+
     static Project createTestProject() {
         Project project = Project.builder()
                 .projectId(UUID.randomUUID())
@@ -31,6 +32,7 @@ public class TestEntitiesCreator {
                 .projectName("testproject").build();
         return project;
     }
+
     static Team createTeamTest(Employee employee, Project project) {
         TeamId teamId = TeamId.builder().member(employee).project(project).build();
         Team team = Team.builder().role(TeamRole.ANALYST).teamId(teamId).build();

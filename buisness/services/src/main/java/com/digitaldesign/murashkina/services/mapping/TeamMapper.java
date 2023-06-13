@@ -12,6 +12,7 @@ public class TeamMapper {
     public TeamMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
+
     public Team toEntity(TeamDto request) {
         return this.modelMapper.map(request, Team.class);
     }

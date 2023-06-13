@@ -12,7 +12,6 @@ import com.digitaldesign.murashkina.repositories.EmployeeRepository;
 import com.digitaldesign.murashkina.repositories.ProjectRepository;
 import com.digitaldesign.murashkina.repositories.TeamRepository;
 import com.digitaldesign.murashkina.services.TeamService;
-import com.digitaldesign.murashkina.services.exceptions.employee.AccountAlreadyExistException;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeDeletedException;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeNotFoundException;
 import com.digitaldesign.murashkina.services.exceptions.project.ProjectNotFoundException;
@@ -66,10 +65,12 @@ public class TeamServiceTest {
         Assertions.assertEquals(team.getTeamId().getProject().getProjectId(), acctualresponse.getProject());
         Assertions.assertEquals(team.getRole().name(), acctualresponse.getRole());
     }
+
     @Test
     public void createMember_teamIsNull() {
         Assertions.assertThrows(TeamIsNullException.class, () -> teamService.createMember(TeamDto.builder().build()));
     }
+
     @Test
     public void createMember_employeeNotFound() {
         Employee employee = createTestEmployee("user1");
@@ -79,6 +80,7 @@ public class TeamServiceTest {
         when(employeeRepository.existsById(employee.getId())).thenReturn(false);
         Assertions.assertThrows(EmployeeNotFoundException.class, () -> teamService.createMember(testTeamDto));
     }
+
     @Test
     public void createMember_projectNotFound() {
         Employee employee = createTestEmployee("user1");
@@ -89,6 +91,7 @@ public class TeamServiceTest {
         when(projectRepository.existsById(project.getProjectId())).thenReturn(false);
         Assertions.assertThrows(ProjectNotFoundException.class, () -> teamService.createMember(testTeamDto));
     }
+
     @Test
     public void createMember_employeeAlreadyInTeam() {
         Employee employee = createTestEmployee("user1");
@@ -102,6 +105,7 @@ public class TeamServiceTest {
         when(projectRepository.findById(project.getProjectId())).thenReturn(Optional.of(project));
         Assertions.assertThrows(EmployeeAlreadyInTeamException.class, () -> teamService.createMember(testTeamDto));
     }
+
     @Test
     public void createMember_employeeDeleted() {
         Employee employee = createTestEmployee("user1");
@@ -116,6 +120,7 @@ public class TeamServiceTest {
         when(projectRepository.findById(project.getProjectId())).thenReturn(Optional.of(project));
         Assertions.assertThrows(EmployeeDeletedException.class, () -> teamService.createMember(testTeamDto));
     }
+
     @Test
     public void createMember_invalidTeamRole() {
         Employee employee = createTestEmployee("user1");
@@ -130,6 +135,7 @@ public class TeamServiceTest {
         when(projectRepository.findById(project.getProjectId())).thenReturn(Optional.of(project));
         Assertions.assertThrows(InvalidTeamRoleException.class, () -> teamService.createMember(testTeamDto));
     }
+
     @Test
     public void deleteMember() {
         Employee employee = createTestEmployee("user1");
@@ -151,6 +157,7 @@ public class TeamServiceTest {
         Assertions.assertEquals(team.getTeamId().getProject().getProjectId(), acctualresponse.getProject());
         Assertions.assertEquals(team.getRole().name(), acctualresponse.getRole());
     }
+
     @Test
     public void deleteMember_employeeNotFound() {
         Employee employee = createTestEmployee("user1");
@@ -161,6 +168,7 @@ public class TeamServiceTest {
         Assertions.assertThrows(EmployeeNotFoundException.class, () -> teamService.deleteMember(deleteMemberRequest));
 
     }
+
     @Test
     public void deleteMember_projectNotFound() {
         Employee employee = createTestEmployee("user1");

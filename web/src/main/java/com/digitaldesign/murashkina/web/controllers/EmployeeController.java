@@ -38,13 +38,13 @@ public class EmployeeController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-       Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getAccount(), authRequest.getPassword()));
-       if (employeeService.findByAccount(authRequest.getAccount()).getStatus().name().equals("BLOCKED")) {
+        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getAccount(), authRequest.getPassword()));
+        if (employeeService.findByAccount(authRequest.getAccount()).getStatus().name().equals("BLOCKED")) {
             throw new EmployeeDeletedException();
         }
-        if(authentication.isAuthenticated()){
+        if (authentication.isAuthenticated()) {
             return ResponseEntity.ok(AuthResponse.builder().jwtToken(jwtService.generateToken(authRequest.getAccount())).build());
-        }else {
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неверный логин или пароль");
         }
 

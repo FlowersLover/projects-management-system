@@ -8,7 +8,6 @@ import com.digitaldesign.murashkina.dto.response.ProjectResponse;
 import com.digitaldesign.murashkina.models.project.Project;
 import com.digitaldesign.murashkina.repositories.ProjectRepository;
 import com.digitaldesign.murashkina.services.ProjectService;
-import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeIsNullException;
 import com.digitaldesign.murashkina.services.exceptions.project.InvalidProjectStatusException;
 import com.digitaldesign.murashkina.services.exceptions.project.ProjectIsNullException;
 import com.digitaldesign.murashkina.services.exceptions.project.ProjectNotFoundException;
@@ -84,12 +83,14 @@ public class ProjectFuncTest extends BaseTest {
         Assertions.assertEquals(project.getProjectId().toString(), projectResponse.getProjectId());
         Assertions.assertEquals(status, projectResponse.getProjectStatus());
     }
+
     @Test
     void updateProjectStatus_ProjectNotFound() {
         ProjStatus status = ProjStatus.COMPLETED;
         Assertions.assertThrows(ProjectNotFoundException.class,
                 () -> projectService.updateStatus(status.name(), UUID.randomUUID()));
     }
+
     @Test
     void updateProjectStatus_statusNotAviable() {
         Project project = getTestProj();
@@ -97,6 +98,7 @@ public class ProjectFuncTest extends BaseTest {
         Assertions.assertThrows(StatusUnaviablException.class,
                 () -> projectService.updateStatus(ProjStatus.DRAFT.name(), project.getProjectId()));
     }
+
     @Test
     void updateProjectStatus_invalidStatus() {
         Project project = getTestProj();
@@ -148,8 +150,9 @@ public class ProjectFuncTest extends BaseTest {
         Assertions.assertEquals(projectsList.get(2).getProjectId().toString(), projectResponses.get(0).getProjectId());
         Assertions.assertEquals(projectsList.get(2).getProjectStatus(), projectResponses.get(0).getProjectStatus());
     }
+
     @Test
-    void getProject(){
+    void getProject() {
         Project project = getTestProj();
         ProjectRequest request = ProjectRequest.builder()
                 .projectName("testproject")
@@ -157,14 +160,16 @@ public class ProjectFuncTest extends BaseTest {
         ProjectResponse projectResponse = projectService.getProject(project.getProjectId());
         Assertions.assertEquals(request.getProjectName(), projectResponse.getProjectName());
         Assertions.assertEquals(request.getDescription(), projectResponse.getDescription());
-        Assertions.assertEquals(project.getProjectId().toString(),projectResponse.getProjectId());
+        Assertions.assertEquals(project.getProjectId().toString(), projectResponse.getProjectId());
         Assertions.assertEquals(project.getProjectStatus(), projectResponse.getProjectStatus());
     }
+
     @Test
     void getProject_projectNotFound() {
         Assertions.assertThrows(ProjectNotFoundException.class,
-                () -> projectService.getProject( UUID.randomUUID()));
+                () -> projectService.getProject(UUID.randomUUID()));
     }
+
     private List<Project> getPrjectsList() {
         Project project = Project.builder()
                 .projectStatus(ProjStatus.TEST)
@@ -183,6 +188,7 @@ public class ProjectFuncTest extends BaseTest {
         Project dbproject2 = projectRepository.save(project2);
         return List.of(dbproject, dbproject1, dbproject2);
     }
+
     private Project getTestProj() {
         Project project = Project.builder()
                 .projectStatus(ProjStatus.DRAFT)

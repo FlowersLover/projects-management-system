@@ -2,18 +2,14 @@ package com.digitaldesign.murashkina.app.services.integretion.controllers;
 
 import com.digitaldesign.murashkina.app.services.integretion.BaseTest;
 import com.digitaldesign.murashkina.dto.enums.EStatus;
-import com.digitaldesign.murashkina.dto.enums.ProjStatus;
 import com.digitaldesign.murashkina.dto.request.employee.AuthRequest;
 import com.digitaldesign.murashkina.dto.request.employee.EmployeeRequest;
 import com.digitaldesign.murashkina.dto.request.employee.UpdateEmployeeRequest;
 import com.digitaldesign.murashkina.dto.request.employee.UpdatePasswordRequest;
-import com.digitaldesign.murashkina.dto.request.project.ProjectRequest;
 import com.digitaldesign.murashkina.models.employee.Employee;
-import com.digitaldesign.murashkina.models.project.Project;
 import com.digitaldesign.murashkina.repositories.EmployeeRepository;
 import com.digitaldesign.murashkina.services.mapping.EmployeeMapper;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +23,6 @@ import java.util.Arrays;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -206,6 +201,7 @@ public class EmployeeControllerTest extends BaseTest {
                 .andExpect(jsonPath("$.jwtToken").isNotEmpty());
 
     }
+
     @Test
     public void authenticateAndGetToken_statusBadRequest_Invalidlogin() throws Exception {
         ObjectMapper mapper = new ObjectMapper();

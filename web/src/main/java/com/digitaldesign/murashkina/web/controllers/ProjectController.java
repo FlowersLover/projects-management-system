@@ -22,6 +22,7 @@ import java.util.UUID;
 @Tag(name = "ProjectController", description = "Контроллер проекта")
 public class ProjectController {
     private final ProjectService projectService;
+
     public ProjectController(ProjectService projectService) {
         this.projectService = projectService;
     }

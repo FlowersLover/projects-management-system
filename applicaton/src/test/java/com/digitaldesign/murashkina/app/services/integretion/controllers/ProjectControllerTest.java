@@ -12,15 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 import org.testcontainers.shaded.com.fasterxml.jackson.databind.ObjectMapper;
 
+import java.util.Arrays;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-
-import org.springframework.security.test.context.support.WithMockUser;
-
-import java.util.Arrays;
 
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -29,10 +28,12 @@ public class ProjectControllerTest extends BaseTest {
     private MockMvc mockMvc;
     @Autowired
     ProjectRepository projectRepository;
+
     @AfterEach
     public void resetDb() {
         projectRepository.deleteAll();
     }
+
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void create() throws Exception {
@@ -101,6 +102,7 @@ public class ProjectControllerTest extends BaseTest {
                 .andExpect(jsonPath("$.description").value(project.getDescription()))
                 .andExpect(jsonPath("$.projectStatus").value(updateProjectStatus.getStatus()));
     }
+
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void searchProjects() throws Exception {
@@ -124,14 +126,15 @@ public class ProjectControllerTest extends BaseTest {
         Project savedproject2 = projectRepository.save(project2);
         Project savedproject3 = projectRepository.save(project3);
 
-       mockMvc.perform(get("/project/search").param("statuses",savedproject1.getProjectStatus().name()))
+        mockMvc.perform(get("/project/search").param("statuses", savedproject1.getProjectStatus().name()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(Arrays.asList(savedproject1,savedproject2))));
+                .andExpect(content().json(mapper.writeValueAsString(Arrays.asList(savedproject1, savedproject2))));
         mockMvc.perform(get("/project/search")
-                        .param("projectName",project2.getProjectName()))
+                        .param("projectName", project2.getProjectName()))
                 .andExpect(status().isOk())
-                .andExpect(content().json(mapper.writeValueAsString(Arrays.asList(savedproject2,savedproject3))));
+                .andExpect(content().json(mapper.writeValueAsString(Arrays.asList(savedproject2, savedproject3))));
     }
+
     @Test
     @WithMockUser(username = "admin", authorities = {"ROLE_ADMIN"})
     public void getProjectInfo() throws Exception {

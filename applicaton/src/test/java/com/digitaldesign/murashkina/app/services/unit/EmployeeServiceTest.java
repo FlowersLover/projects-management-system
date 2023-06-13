@@ -12,7 +12,6 @@ import com.digitaldesign.murashkina.repositories.EmployeeRepository;
 import com.digitaldesign.murashkina.services.EmployeeService;
 import com.digitaldesign.murashkina.services.exceptions.employee.*;
 import com.digitaldesign.murashkina.services.mapping.EmployeeMapper;
-
 import com.digitaldesign.murashkina.services.specifications.EmployeeSpecification;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -212,6 +211,7 @@ public class EmployeeServiceTest {
         Assertions.assertNotNull(actualEmployee.getLastName());
         Assertions.assertNotNull(actualEmployee.getFirstName());
     }
+
     @Test
     public void updatePassword_employeeNotFound() {
         Employee employee = createTestEmployee("test");
@@ -224,6 +224,7 @@ public class EmployeeServiceTest {
         Assertions.assertThrows(EmployeeNotFoundException.class, () -> employeeService.updatePassword(updatePasswordRequest, employeeId));
 
     }
+
     @Test
     public void updatePassword_accessDenied() {
         Employee employee = createTestEmployee("test");
@@ -243,6 +244,7 @@ public class EmployeeServiceTest {
         when(employeeMapper.toDto(employee)).thenReturn(employeeResponse);
         Assertions.assertThrows(AccessToResourceDeniedException.class, () -> employeeService.updatePassword(updatePasswordRequest, employeeId));
     }
+
     @Test
     public void updatePassword_employeeDeleted() {
         Employee employee = createTestEmployee("test");
@@ -263,6 +265,7 @@ public class EmployeeServiceTest {
         Assertions.assertThrows(EmployeeDeletedException.class, () -> employeeService.updatePassword(updatePasswordRequest, employeeId));
 
     }
+
     @Test
     public void updatePassword_passwordMismatch() {
         Employee employee = createTestEmployee("test");
@@ -280,6 +283,7 @@ public class EmployeeServiceTest {
         when(employeeMapper.toDto(employee)).thenReturn(employeeResponse);
         Assertions.assertThrows(PasswordsMismatchException.class, () -> employeeService.updatePassword(updatePasswordRequest, employeeId));
     }
+
     @Test
     public void search() {
         Employee employee = createTestEmployee("user1");
@@ -343,6 +347,7 @@ public class EmployeeServiceTest {
         Assertions.assertEquals(employee.getStatus(), acctualemployee.getStatus());
         Assertions.assertEquals(employee.getPosition(), acctualemployee.getPosition());
     }
+
     @Test
     public void deleteEmployee() {
         Employee employee = createTestEmployee("executor");
@@ -359,6 +364,7 @@ public class EmployeeServiceTest {
         Assertions.assertEquals(employee.getPosition(), acctualemployee.getPosition());
 
     }
+
     @Test
     public void deleteEmployee_employeeNotFound() {
         Employee employee = createTestEmployee("executor");
@@ -367,6 +373,7 @@ public class EmployeeServiceTest {
 
 
     }
+
     @Test
     public void getEmployee_EmployeeNotFound() {
         Employee employee = createTestEmployee("executor");
@@ -386,6 +393,7 @@ public class EmployeeServiceTest {
                 .position("tester")
                 .build();
     }
+
     private UpdateEmployeeRequest createTestUpdateEmployeeRequest(String account) {
         UpdateEmployeeRequest employeeRequest = UpdateEmployeeRequest.builder()
                 .account("test")
@@ -395,6 +403,7 @@ public class EmployeeServiceTest {
                 .build();
         return employeeRequest;
     }
+
     private EmployeeResponse createTestEmployeeResponse(String account, UUID employeeId) {
         EmployeeResponse employeeResponse = EmployeeResponse.builder()
                 .id(employeeId)

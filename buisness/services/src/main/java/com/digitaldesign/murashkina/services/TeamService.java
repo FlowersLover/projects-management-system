@@ -1,7 +1,6 @@
 package com.digitaldesign.murashkina.services;
 
 import com.digitaldesign.murashkina.dto.enums.TeamRole;
-import com.digitaldesign.murashkina.dto.request.employee.EmployeeRequest;
 import com.digitaldesign.murashkina.dto.request.team.DeleteMember;
 import com.digitaldesign.murashkina.dto.request.team.TeamDto;
 import com.digitaldesign.murashkina.models.employee.Employee;
@@ -11,7 +10,6 @@ import com.digitaldesign.murashkina.models.team.TeamId;
 import com.digitaldesign.murashkina.repositories.EmployeeRepository;
 import com.digitaldesign.murashkina.repositories.ProjectRepository;
 import com.digitaldesign.murashkina.repositories.TeamRepository;
-import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeIsNullException;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeNotFoundException;
 import com.digitaldesign.murashkina.services.exceptions.project.ProjectNotFoundException;
 import com.digitaldesign.murashkina.services.exceptions.team.EmployeeAlreadyInTeamException;

@@ -19,6 +19,7 @@ public class TaskMapper {
         Task task = this.modelMapper.map(request, Task.class);
         return task;
     }
+
     public Task toEntity(UpdateTaskRequest request) {
         Task task = this.modelMapper.map(request, Task.class);
         return task;

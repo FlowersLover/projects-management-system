@@ -16,18 +16,15 @@ public class EmployeeMapper {
     }
 
     public Employee toEntity(EmployeeRequest request) {
-        Employee employee = this.modelMapper.map(request, Employee.class);
-        return employee;
+        return this.modelMapper.map(request, Employee.class);
     }
 
     public Employee toEntity(UpdateEmployeeRequest request) {
-        Employee employee = this.modelMapper.map(request, Employee.class);
-        return employee;
+        return this.modelMapper.map(request, Employee.class);
     }
 
     public EmployeeResponse toDto(Employee model) {
-        EmployeeResponse dto = this.modelMapper.map(model, EmployeeResponse.class);
-        return dto;
+        return this.modelMapper.map(model, EmployeeResponse.class);
     }
 
 

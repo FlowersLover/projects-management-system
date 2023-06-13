@@ -12,7 +12,7 @@ import java.util.UUID;
 
 public class TestEntitiesCreator {
     static Employee createTestEmployee(String account) {
-        Employee employee = Employee.builder()
+        return Employee.builder()
                 .id(UUID.randomUUID())
                 .account(account)
                 .lastName("Test")
@@ -21,21 +21,18 @@ public class TestEntitiesCreator {
                 .status(EStatus.ACTIVE)
                 .position("tester")
                 .build();
-        return employee;
     }
 
     static Project createTestProject() {
-        Project project = Project.builder()
+        return Project.builder()
                 .projectId(UUID.randomUUID())
                 .projectStatus(ProjStatus.DRAFT)
                 .description("description test")
                 .projectName("testproject").build();
-        return project;
     }
 
     static Team createTeamTest(Employee employee, Project project) {
         TeamId teamId = TeamId.builder().member(employee).project(project).build();
-        Team team = Team.builder().role(TeamRole.ANALYST).teamId(teamId).build();
-        return team;
+        return Team.builder().role(TeamRole.ANALYST).teamId(teamId).build();
     }
 }

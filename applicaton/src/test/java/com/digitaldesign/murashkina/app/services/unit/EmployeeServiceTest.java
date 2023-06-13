@@ -396,7 +396,7 @@ public class EmployeeServiceTest {
 
     private UpdateEmployeeRequest createTestUpdateEmployeeRequest(String account) {
         UpdateEmployeeRequest employeeRequest = UpdateEmployeeRequest.builder()
-                .account("test")
+                .account(account)
                 .lastName("Test")
                 .firstName("Test")
                 .position("tester")

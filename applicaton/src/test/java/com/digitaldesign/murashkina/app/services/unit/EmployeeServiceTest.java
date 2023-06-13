@@ -395,17 +395,16 @@ public class EmployeeServiceTest {
     }
 
     private UpdateEmployeeRequest createTestUpdateEmployeeRequest(String account) {
-        UpdateEmployeeRequest employeeRequest = UpdateEmployeeRequest.builder()
+        return UpdateEmployeeRequest.builder()
                 .account(account)
                 .lastName("Test")
                 .firstName("Test")
                 .position("tester")
                 .build();
-        return employeeRequest;
     }
 
     private EmployeeResponse createTestEmployeeResponse(String account, UUID employeeId) {
-        EmployeeResponse employeeResponse = EmployeeResponse.builder()
+        return EmployeeResponse.builder()
                 .id(employeeId)
                 .account(account)
                 .lastName("Test")
@@ -413,7 +412,6 @@ public class EmployeeServiceTest {
                 .status(EStatus.ACTIVE)
                 .position("tester")
                 .build();
-        return employeeResponse;
     }
 
 

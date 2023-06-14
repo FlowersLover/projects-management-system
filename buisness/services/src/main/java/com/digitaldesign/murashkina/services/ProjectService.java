@@ -87,7 +87,7 @@ public class ProjectService {
     private void projectIsNull(ProjectRequest createRequest) {
         if (createRequest == null
                 || createRequest.getProjectName() == null) {
-            throw new ProjectIsNullException("Project is Null");
+            throw new ProjectIsNullException();
         }
     }
 

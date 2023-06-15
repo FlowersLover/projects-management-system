@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
     <parent>
         <groupId>com.digitaldesign.murashkina</groupId>
-        <artifactId>projects-management-system</artifactId>
+        <artifactId>projects-management-system1</artifactId>
         <version>${revision}${changelist}</version>
     </parent>
 

@@ -65,7 +65,7 @@ public class DataStorageImpl implements DataStorage {
 
     @Override
     public Employee create(Employee employee) {
-        try (FileOutputStream fos = new FileOutputStream(file, true);) {
+        try (FileOutputStream fos = new FileOutputStream(file, true)) {
             if (file.length() < 1) {
                 ObjectOutputStream oos = new ObjectOutputStream(fos);
                 oos.writeObject(employee);
@@ -134,8 +134,6 @@ public class DataStorageImpl implements DataStorage {
                 oos.writeObject(employee);
             }
             return newEmployee;
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -148,7 +146,6 @@ class AppendingObjectOutputStream extends ObjectOutputStream {
         super(out);
     }
 
-    public void writeStreamHeader() throws IOException {
-        return;
+    public void writeStreamHeader() {
     }
 }

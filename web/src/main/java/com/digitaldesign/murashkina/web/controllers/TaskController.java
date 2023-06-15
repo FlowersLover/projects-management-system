@@ -26,7 +26,6 @@ import java.util.UUID;
 @Log4j2
 public class TaskController {
     private final TaskService taskService;
-
     public TaskController(TaskService taskService) {
         this.taskService = taskService;
     }
@@ -44,6 +43,7 @@ public class TaskController {
     @PutMapping(path = "/{taskId}")
     public ResponseEntity<TaskResponse> updateTask(@PathVariable("taskId") String taskId, @RequestBody @Valid UpdateTaskRequest request) {
         TaskResponse taskResponse = taskService.update(request, UUID.fromString(taskId));
+
         return ResponseEntity.ok(taskResponse);
     }
 

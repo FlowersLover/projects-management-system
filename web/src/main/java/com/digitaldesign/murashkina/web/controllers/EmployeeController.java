@@ -12,8 +12,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -31,7 +29,6 @@ import java.util.UUID;
 @Tag(name = "EmployeeController", description = "Контроллер сотрудника")
 @Log4j2
 public class EmployeeController {
-    private static final Logger logger = LogManager.getLogger(ProjectController.class);
 
     private EmployeeService employeeService;
     private JwtService jwtService;
@@ -40,14 +37,16 @@ public class EmployeeController {
 
     @PostMapping("/authenticate")
     public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
-        logger.debug("DASHA HIII");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getAccount(), authRequest.getPassword()));
         if (employeeService.findByAccount(authRequest.getAccount()).getStatus().name().equals("BLOCKED")) {
             throw new EmployeeDeletedException();
         }
         if (authentication.isAuthenticated()) {
+
             return ResponseEntity.ok(AuthResponse.builder().jwtToken(jwtService.generateToken(authRequest.getAccount())).build());
+
         } else {
+            log.warn("Invalid login or password");
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неверный логин или пароль");
         }
 

@@ -14,11 +14,15 @@ import com.digitaldesign.murashkina.repositories.EmployeeRepository;
 import com.digitaldesign.murashkina.repositories.ProjectRepository;
 import com.digitaldesign.murashkina.repositories.TaskRepository;
 import com.digitaldesign.murashkina.repositories.TeamRepository;
+import com.digitaldesign.murashkina.services.email.EmailDetails;
+import com.digitaldesign.murashkina.services.email.EmailServiceImpl;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeNotFoundException;
 import com.digitaldesign.murashkina.services.exceptions.task.*;
 import com.digitaldesign.murashkina.services.mapping.TaskMapper;
 import com.digitaldesign.murashkina.services.specifications.TaskSpecification;
+import lombok.extern.log4j.Log4j2;
 import org.apache.commons.lang3.EnumUtils;
+import org.springframework.mail.MailException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -27,6 +31,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
+@Log4j2
 public class TaskService {
     private final TaskRepository taskRepository;
     private final EmployeeRepository employeeRepository;
@@ -34,17 +39,41 @@ public class TaskService {
     private final ProjectRepository projectRepository;
     private final TaskSpecification ts;
     private final TaskMapper taskMapper;
+    private final EmailServiceImpl emailServiceImpl;
 
-    public TaskService(TaskRepository taskRepository, EmployeeRepository employeeRepository, TeamRepository teamRepository, ProjectRepository projectRepository, TaskSpecification ts, TaskMapper taskMapper) {
+
+    public TaskService(TaskRepository taskRepository,
+                       EmployeeRepository employeeRepository,
+                       TeamRepository teamRepository,
+                       ProjectRepository projectRepository,
+                       TaskSpecification ts, TaskMapper taskMapper, EmailServiceImpl emailServiceImpl) {
         this.taskRepository = taskRepository;
         this.employeeRepository = employeeRepository;
         this.teamRepository = teamRepository;
         this.projectRepository = projectRepository;
         this.ts = ts;
         this.taskMapper = taskMapper;
+        this.emailServiceImpl = emailServiceImpl;
+    }
+
+    private void sendEmailAssignExecutor(TaskResponse taskResponse) {
+        Employee executor = employeeRepository.findById(taskResponse.getExecutor()).get();
+        try {
+            Map<String, Object> model = new HashMap<String, Object>();
+            model.put("name", executor.getFirstName());
+            model.put("taskName", taskResponse.getTaskName());
+            model.put("createdAt", taskResponse.getCreatedAt());
+            model.put("author", taskResponse.getAuthor());
+            EmailDetails details = EmailDetails.builder().to(executor.getEmail())
+                    .subject("Вы назанчены исполнителем задачи").templateLocation("letter-template").context(model).build();
+            emailServiceImpl.sendMail(details);
+        } catch (MailException mailException) {
+            log.error("Error while sending out email..{}", mailException.getStackTrace());
+        }
     }
 
     public TaskResponse create(TaskRequest taskRequest) {
+        log.debug("Task create started");
         taskIsNull(taskRequest);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUser = authentication.getName();
@@ -58,10 +87,13 @@ public class TaskService {
         task.setExecutor(employeeRepository.findById(UUID.fromString(taskRequest.getExecutor().toString())).get());
         task.setProjectId(projectRepository.findById(taskRequest.getProject()).get());
         taskRepository.save(task);
-        return taskMapper.toDto(task);
+        TaskResponse dto = taskMapper.toDto(task);
+        sendEmailAssignExecutor(dto);
+        return dto;
     }
 
     public TaskResponse update(UpdateTaskRequest updateTaskRequest, UUID id) {
+        log.debug("Task change started");
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUser = authentication.getName();
         TaskRequest taskRequest = taskMapper.toDto(updateTaskRequest);
@@ -80,10 +112,15 @@ public class TaskService {
         newTask.setCreatedAt(task.get().getCreatedAt());
         newTask.setProjectId(task.get().getProjectId());
         taskRepository.save(newTask);
-        return taskMapper.toDto(newTask);
+        TaskResponse dto = taskMapper.toDto(newTask);
+        if (!task.get().getExecutor().getId().equals(updateTaskRequest.getExecutor())) {
+            sendEmailAssignExecutor(dto);
+        }
+        return dto;
     }
 
     public TaskResponse updateStatus(UpdateTaskStatusRequest taskStatusRequest, UUID id) {
+        log.debug("Task status change started");
         taskStatusIsNull(taskStatusRequest);
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentUser = authentication.getName();
@@ -102,6 +139,7 @@ public class TaskService {
     }
 
     public List<TaskResponse> search(SearchTaskRequest searchFilter) {
+        log.debug("Task search started");
         searchFilterIsNull(searchFilter);
         List<Task> taskList = taskRepository.findAll(
                 ts.getSpecification(searchFilter));
@@ -117,6 +155,7 @@ public class TaskService {
 
     private void searchFilterIsNull(SearchTaskRequest searchFilter) {
         if (searchFilter == null) {
+            log.warn("Search Filter Is Null");
             throw new SearchRequestIsNullException();
         }
     }
@@ -128,6 +167,7 @@ public class TaskService {
 
     private void invalidTaskStatus(String status) {
         if (!EnumUtils.isValidEnum(TaskStatus.class, status)) {
+            log.warn("Invalid Task Status");
             throw new InvalidTaskStatusException();
         }
     }
@@ -139,6 +179,7 @@ public class TaskService {
     private void taskStatusIsNull(UpdateTaskStatusRequest taskRequest) {
         if (taskRequest == null
                 || taskRequest.getStatus() == null) {
+            log.warn("Task Status Is Null");
             throw new TaskIsNullException();
         }
     }
@@ -147,24 +188,28 @@ public class TaskService {
         Optional<Employee> employee = employeeRepository.findByAccount(employeeAccount);
         Optional<Project> project = projectRepository.findById(projectId);
         if (!teamRepository.existsById(TeamId.builder().member(employee.get()).project(project.get()).build())) {
+            log.warn("Employee Not Member Of Team");
             throw new EmployeeNotMemberOfTeamException();
         }
     }
 
     private void taskNotFound(UUID id) {
         if (!taskRepository.existsById(id)) {
+            log.warn("Task Not Found");
             throw new TaskNotFoundException();
         }
     }
 
     private void employeeNotFound(TaskRequest taskRequest) {
         if (!employeeRepository.existsById(taskRequest.getExecutor())) {
+            log.warn("Employee Not Found");
             throw new EmployeeNotFoundException();
         }
     }
 
     private void statusNotAviable(UUID id, TaskStatus status) {
         if (!taskStatusIsAviable(id, status)) {
+            log.warn("Status Not Aviable");
             throw new TaskStatusNotAviableException();
         }
     }
@@ -174,6 +219,7 @@ public class TaskService {
                 || taskRequest.getTaskName() == null
                 || taskRequest.getHoursToCompleteTask() == null
                 || taskRequest.getDeadline() == null) {
+            log.warn("Task is null");
             throw new TaskIsNullException();
         }
     }

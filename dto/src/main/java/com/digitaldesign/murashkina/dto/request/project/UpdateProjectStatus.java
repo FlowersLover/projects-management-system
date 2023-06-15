@@ -10,6 +10,5 @@ import lombok.Setter;
 @Setter
 @Builder
 public class UpdateProjectStatus {
-    private String projectId;
     private ProjStatus status;
 }

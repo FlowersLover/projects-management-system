@@ -3,7 +3,7 @@ CREATE TABLE "employee"
     "id"       uuid PRIMARY KEY DEFAULT gen_random_uuid(),
     firstname  varchar(50)  NOT NULL,
     "lastname" varchar(50)  NOT NULL,
-    middlename varchar(50),
+    "middlename" varchar(50),
     "account"  varchar(50) UNIQUE,
     "status"   varchar(30)  NOT NULL,
     "position" varchar(50),
@@ -134,28 +134,28 @@ CREATE TABLE "task"
     FOREIGN KEY (executor) REFERENCES employee (id)
 );
 
-insert into task (author, task_name, description, hours_to_comlete_task, deadline, last_changed, status)
+insert into task (author, task_name, description, hours_to_complete_task, deadline, last_changed, status)
 values ((SELECT id FROM employee WHERE firstname = 'Roxanne'), 'cursus', null, 84, '2024-03-19 20:37:13',
         '2024-01-05 22:11:51', 'NEW');
-insert into task (author, task_name, description, hours_to_comlete_task, deadline, last_changed, status)
+insert into task (author, task_name, description, hours_to_complete_task, deadline, last_changed, status)
 values ((SELECT id FROM employee WHERE firstname = 'Worth'), 'posuere',
         'massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio cras mi pede malesuada', 7,
         '2023-09-28 17:38:48', '2022-09-13 22:01:20', 'CLOSED');
-insert into task (author, task_name, description, hours_to_comlete_task, deadline, last_changed, status)
+insert into task (author, task_name, description, hours_to_complete_task, deadline, last_changed, status)
 values ((SELECT id FROM employee WHERE firstname = 'Jozef'), 'ipsum',
         'vel nisl duis ac nibh fusce lacus purus aliquet at feugiat non pretium quis lectus suspendisse potenti', 11,
         '2023-02-25 01:44:06', '2023-12-31 19:32:32', 'NEW');
 
-insert into task (author, executor, task_name, description, hours_to_comlete_task, deadline, last_changed, status)
+insert into task (author, executor, task_name, description, hours_to_complete_task, deadline, last_changed, status)
 values ((SELECT id FROM employee WHERE firstname = 'Rosalyn'), (SELECT id FROM employee WHERE firstname = 'Kacey'),
         'tristique',
         'id massa id nisl venenatis lacinia aenean sit amet justo morbi ut odio', 66, '2024-04-04 10:37:02',
         '2022-06-02 12:09:24', 'CLOSED');
-insert into task (author, executor, task_name, description, hours_to_comlete_task, deadline, last_changed, status)
+insert into task (author, executor, task_name, description, hours_to_complete_task, deadline, last_changed, status)
 values ((SELECT id FROM employee WHERE firstname = 'Melba'), (SELECT id FROM employee WHERE firstname = 'Archy'),
         'nisl', null, 82, '2023-05-19 11:46:30',
         '2023-10-04 01:22:49', 'NEW');
-insert into task (author, executor, task_name, description, hours_to_comlete_task, deadline, last_changed, status)
+insert into task (author, executor, task_name, description, hours_to_complete_task, deadline, last_changed, status)
 values ((SELECT id FROM employee WHERE firstname = 'Melba'), (SELECT id FROM employee WHERE firstname = 'Zelig'),
         'purus',
         'ante vivamus tortor duis mattis egestas metus aenean fermentum donec ut mauris eget massa tempor convallis nulla',

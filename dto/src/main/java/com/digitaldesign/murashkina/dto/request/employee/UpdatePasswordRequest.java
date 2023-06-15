@@ -9,11 +9,7 @@ import org.springframework.context.annotation.ComponentScan;
 @Setter
 @Builder
 @ComponentScan
-public class SearchEmployeeRequest {
-    private String account;
-    private String lastName;
-    private String firstName;
-    private String middleName;
-    private String email;
-
+public class UpdatePasswordRequest {
+    private String password;
+    private String confirmPassword;
 }

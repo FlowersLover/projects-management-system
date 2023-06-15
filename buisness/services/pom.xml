@@ -13,8 +13,23 @@
     <artifactId>services</artifactId>
     <dependencies>
         <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.digitaldesign.murashkina</groupId>
             <artifactId>models</artifactId>
+            <version>${revision}${changelist}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.digitaldesign.murashkina</groupId>
+            <artifactId>dto</artifactId>
+            <version>${revision}${changelist}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.digitaldesign.murashkina</groupId>
+            <artifactId>repositories</artifactId>
             <version>${revision}${changelist}</version>
         </dependency>
     </dependencies>

@@ -2,11 +2,12 @@ package com.digitaldesign.murashkina.models.task;
 
 import com.digitaldesign.murashkina.dto.enums.TaskStatus;
 import com.digitaldesign.murashkina.models.employee.Employee;
+import com.digitaldesign.murashkina.models.project.Project;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.lang.NonNull;
 
-import javax.validation.constraints.Size;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,7 +25,6 @@ public class Task {
 
     @Column(name = "task_name")
     @NonNull
-    @Size(min = 3, max = 50)
     private String taskName;
 
     @Column(name = "description")
@@ -35,7 +35,7 @@ public class Task {
     @JoinColumn(name = "executor")
     private Employee executor;
 
-    @Column(name = "hours_to_comlete_task")
+    @Column(name = "hours_to_complete_task")
     @NonNull
     private Integer hoursToCompleteTask;
 
@@ -56,6 +56,11 @@ public class Task {
     @NonNull
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
+
+    @ManyToOne
+    @JoinColumn(name = "project")
+    @NonNull
+    private Project projectId;
 
     public Task() {
 

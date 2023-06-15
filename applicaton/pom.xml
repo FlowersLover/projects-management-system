@@ -21,12 +21,7 @@
         </dependency>
         <dependency>
             <groupId>com.digitaldesign.murashkina</groupId>
-            <artifactId>services</artifactId>
-            <version>${revision}${changelist}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.digitaldesign.murashkina</groupId>
-            <artifactId>dto</artifactId>
+            <artifactId>web</artifactId>
             <version>${revision}${changelist}</version>
         </dependency>
         <dependency>

@@ -26,7 +26,6 @@ import org.springframework.context.annotation.Import;
         WebConfiguration.class,
         SecurityConfiguration.class})
 public class Application {
-
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -96,7 +95,7 @@ public class Application {
 //---------PROJECT methods--------------------------------------------------------
             //Создание проекта
             /*ProjectRequest projectRequest = ProjectRequest.builder()
-                    .projectName("projname123456")
+                    .projectName(null)
                     .description("описание2")
                     .build();
             ProjectResponse project = projectService.create(projectRequest);

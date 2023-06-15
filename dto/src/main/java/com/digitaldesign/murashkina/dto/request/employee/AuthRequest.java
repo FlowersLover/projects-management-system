@@ -7,6 +7,7 @@ import lombok.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 @Schema(description = "Авторизация сотрудника")
 public class AuthRequest {
 

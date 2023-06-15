@@ -1,6 +1,7 @@
 package com.digitaldesign.murashkina.web.controllers;
 
 import com.digitaldesign.murashkina.dto.request.employee.*;
+import com.digitaldesign.murashkina.dto.response.AuthResponse;
 import com.digitaldesign.murashkina.dto.response.EmployeeResponse;
 import com.digitaldesign.murashkina.services.EmployeeService;
 import com.digitaldesign.murashkina.services.exceptions.employee.EmployeeDeletedException;
@@ -10,13 +11,15 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import lombok.extern.log4j.Log4j2;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,27 +29,28 @@ import java.util.UUID;
 @RequestMapping("/employee")
 @AllArgsConstructor
 @Tag(name = "EmployeeController", description = "Контроллер сотрудника")
+@Log4j2
 public class EmployeeController {
+    private static final Logger logger = LogManager.getLogger(ProjectController.class);
+
     private EmployeeService employeeService;
     private JwtService jwtService;
     private AuthenticationManager authenticationManager;
 
-    @GetMapping("/welcome")
-    public String getTest() {
-        return "Helloo";
-    }
 
     @PostMapping("/authenticate")
-    public String authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+    public ResponseEntity<?> authenticateAndGetToken(@RequestBody AuthRequest authRequest) {
+        logger.debug("DASHA HIII");
         Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(authRequest.getAccount(), authRequest.getPassword()));
         if (employeeService.findByAccount(authRequest.getAccount()).getStatus().name().equals("BLOCKED")) {
             throw new EmployeeDeletedException();
         }
         if (authentication.isAuthenticated()) {
-            return jwtService.generateToken(authRequest.getAccount());
+            return ResponseEntity.ok(AuthResponse.builder().jwtToken(jwtService.generateToken(authRequest.getAccount())).build());
         } else {
-            throw new UsernameNotFoundException("invalid user request!");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Неверный логин или пароль");
         }
+
     }
 
     @Operation(summary = "Создание сотрудника")
@@ -77,9 +81,9 @@ public class EmployeeController {
     @SecurityRequirement(name = "Bearer Authentication")
     @DeleteMapping(path = "/{employeeId}")
     @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<EmployeeResponse> deleteEmploye(@PathVariable("employeeId") String employeeId) {
+    public ResponseEntity<EmployeeResponse> deleteEmployee(@PathVariable("employeeId") String employeeId) {
         employeeService.delete(UUID.fromString(employeeId));
-        EmployeeResponse employeeResponse = employeeService.getInfo(UUID.fromString(employeeId));
+        EmployeeResponse employeeResponse = employeeService.getEmployee(UUID.fromString(employeeId));
         return ResponseEntity.ok().body(employeeResponse);
     }
 
@@ -87,13 +91,13 @@ public class EmployeeController {
     @SecurityRequirement(name = "Bearer Authentication")
     @GetMapping("/{employeeId}")
     public ResponseEntity<EmployeeResponse> getEmployeeInfo(@PathVariable("employeeId") String employeeId) {
-        EmployeeResponse employeeResponse = employeeService.getInfo(UUID.fromString(employeeId));
+        EmployeeResponse employeeResponse = employeeService.getEmployee(UUID.fromString(employeeId));
         return ResponseEntity.ok(employeeResponse);
     }
 
     @Operation(summary = "Поиск сотрудника")
     @SecurityRequirement(name = "Bearer Authentication")
-    @GetMapping(value = "/search", params = {"account", "lastName", "firstName", "middleName", "email"})
+    @GetMapping(value = "/search")
     public ResponseEntity<List<EmployeeResponse>> searchEmployee(@RequestParam(value = "account", required = false) String account,
                                                                  @RequestParam(value = "lastName", required = false) String lastName,
                                                                  @RequestParam(value = "firstName", required = false) String firstName,

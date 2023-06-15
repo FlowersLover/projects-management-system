@@ -47,31 +47,31 @@ public class EmployeeService {
         employee.setStatus(EStatus.ACTIVE);
         employee.setPassword(passwordEncoder.encode(createRequest.getPassword()));
         employee.setRole(ERole.ROLE_USER);
-        employeeRepository.save(employee);
-        return employeeMapper.toDto(employee);
+        Employee newEmployee = employeeRepository.save(employee);
+        return employeeMapper.toDto(newEmployee);
 
     }
 
     public EmployeeResponse update(UpdateEmployeeRequest updateEmployeeRequest, UUID id) {
         accessToResourceDenied(id);
-        Optional<Employee> oldEmployee = employeeRepository.findById(id);
         accountAlreadyExistUpdate(updateEmployeeRequest, id);
+        Employee oldEmployee = employeeRepository.findById(id).get();
         emploeeNotFound(id);
-        employeeIsDeleted(oldEmployee.get());
+        employeeDeleted(oldEmployee);
         Employee newEmployee = employeeMapper.toEntity(updateEmployeeRequest);
-        newEmployee.setId(oldEmployee.get().getId());
-        newEmployee.setStatus(oldEmployee.get().getStatus());
-        newEmployee.setPassword(oldEmployee.get().getPassword());
-        newEmployee.setRole(oldEmployee.get().getRole());
-        employeeRepository.save(newEmployee);
-        return employeeMapper.toDto(newEmployee);
+        newEmployee.setId(oldEmployee.getId());
+        newEmployee.setStatus(oldEmployee.getStatus());
+        newEmployee.setPassword(oldEmployee.getPassword());
+        newEmployee.setRole(oldEmployee.getRole());
+        Employee save = employeeRepository.save(newEmployee);
+        return employeeMapper.toDto(save);
     }
 
     public EmployeeResponse updatePassword(UpdatePasswordRequest updatePasswordRequest, UUID id) {
         emploeeNotFound(id);
         accessToResourceDenied(id);
         Employee employee = employeeRepository.findById(id).get();
-        employeeIsDeleted(employee);
+        employeeDeleted(employee);
         passwordsMatch(updatePasswordRequest);
         employee.setPassword(passwordEncoder.encode(updatePasswordRequest.getPassword()));
         employeeRepository.save(employee);
@@ -86,7 +86,7 @@ public class EmployeeService {
         return employeeMapper.toDto(employee);
     }
 
-    public EmployeeResponse getInfo(UUID id) {
+    public EmployeeResponse getEmployee(UUID id) {
         emploeeNotFound(id);
         Optional<Employee> employee = employeeRepository.findById(id);
         return employeeMapper.toDto(employee.get());
@@ -102,7 +102,7 @@ public class EmployeeService {
 
     private void accessToResourceDenied(UUID id) {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (!getInfo(UUID.fromString(id.toString())).getAccount().equals(authentication.getName())
+        if (!getEmployee(id).getAccount().equals(authentication.getName())
                 && !findByAccount(authentication.getName()).getRole().equals(ERole.ROLE_ADMIN)) {
             throw new AccessToResourceDeniedException();
         }
@@ -118,14 +118,14 @@ public class EmployeeService {
     }
 
     private void accountAlreadyExist(EmployeeRequest createRequest) {
-        if (existByAccount(createRequest.getAccount())) {
+        if (employeeRepository.existsEmployeeByAccount(createRequest.getAccount())) {
             throw new AccountAlreadyExistException();
         }
     }
 
     private void accountAlreadyExistUpdate(UpdateEmployeeRequest updateEmployeeRequest, UUID id) {
-        if (existByAccount(updateEmployeeRequest.getAccount())
-                && !updateEmployeeRequest.getAccount().equals(getInfo(id).getAccount())) {
+        if (employeeRepository.existsEmployeeByAccount(updateEmployeeRequest.getAccount())
+                && !updateEmployeeRequest.getAccount().equals(getEmployee(id).getAccount())) {
             throw new AccountAlreadyExistException();
         }
     }
@@ -138,19 +138,16 @@ public class EmployeeService {
 
     private void passwordsMatch(UpdatePasswordRequest updatePasswordRequest) {
         if (!updatePasswordRequest.getPassword().equals(updatePasswordRequest.getConfirmPassword())) {
-            throw new PasswordsNotMatchException();
+            throw new PasswordsMismatchException();
         }
     }
 
-    public boolean existByAccount(String account) {
-        return employeeRepository.existsEmployeeByAccount(account);
-    }
-
-    public static void employeeIsDeleted(Employee employee) {
+    public static void employeeDeleted(Employee employee) {
         if (employee.getStatus().name().equals(EStatus.BLOCKED.name())) {
             throw new EmployeeDeletedException();
         }
     }
+
 
     public Employee findByAccount(String account) {
         Optional<Employee> employee = employeeRepository.findByAccount(account);

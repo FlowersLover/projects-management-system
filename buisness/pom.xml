@@ -7,14 +7,19 @@
     <packaging>pom</packaging>
     <parent>
         <groupId>com.digitaldesign.murashkina</groupId>
-        <artifactId>projects-management-system</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <artifactId>projects-management-system1</artifactId>
+        <version>${revision}${changelist}</version>
     </parent>
     <modules>
         <module>models</module>
         <module>repositories</module>
         <module>services</module>
     </modules>
-
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-jpa</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
